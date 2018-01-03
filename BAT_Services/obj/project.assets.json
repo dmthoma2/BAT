@@ -25,6 +25,16 @@
         "build": {
           "build/netstandard2.0/NETStandard.Library.targets": {}
         }
+      },
+      "BAT_Models/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/BAT_Models.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/BAT_Models.dll": {}
+        }
       }
     }
   },
@@ -169,10 +179,16 @@
         "netstandard.library.2.0.0.nupkg.sha512",
         "netstandard.library.nuspec"
       ]
+    },
+    "BAT_Models/1.0.0": {
+      "type": "project",
+      "path": "../BAT_Models/BAT_Models.csproj",
+      "msbuildProject": "../BAT_Models/BAT_Models.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
+      "BAT_Models >= 1.0.0",
       "NETStandard.Library >= 2.0.0"
     ]
   },
@@ -208,7 +224,11 @@
       },
       "frameworks": {
         "netstandard2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\w3iner\\source\\repos\\BATMobile\\BAT_Models\\BAT_Models.csproj": {
+              "projectPath": "C:\\Users\\w3iner\\source\\repos\\BATMobile\\BAT_Models\\BAT_Models.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

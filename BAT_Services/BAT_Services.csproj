@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BAT_Models\BAT_Models.csproj" />
+  </ItemGroup>
+
 </Project>
