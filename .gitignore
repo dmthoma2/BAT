@@ -1,3 +1,5 @@
 .vs/*
 BatMobile/bin/*
 BatMobile/obj/*
+BAT_Models/bin/*BAT_Models/obj/*BAT_Repository/bin/*BAT_Repository/obj/*BAT_Services/bin/*BAT_Services/obj/*BAT_Tests/bin/*BAT_Tests/obj/*BAT_Utilities/bin/*
+BAT_Utilities/obj/*
