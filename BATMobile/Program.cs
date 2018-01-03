@@ -15,8 +15,10 @@ namespace BATMobile
         static void Main(string[] args)
         {
             //Parse configuration into a model
+              
 
             //Call trading algorithm
+            
 
             //Execute trades based on results
 

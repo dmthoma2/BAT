@@ -9,6 +9,9 @@ namespace BAT_Models
     /// </summary>
     public class Parameters
     {
+        public string BinanceAPIAddress { get; set; }
+        public string APIKey { get; set; }
+
         public int RebalanceThreshold { get; set; }
 
         public string BaseCurrency { get; set; }

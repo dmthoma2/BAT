@@ -16,6 +16,12 @@ namespace BAT_Utilities
         /// </summary>
         public static class AppSettings
         {
+            public static string BinanceAPIAddress()
+            { return System.Configuration.ConfigurationManager.AppSettings["BinanceAPIAddress"]; }//BinanceAPIAddress
+
+            public static string APIKey()
+            { return System.Configuration.ConfigurationManager.AppSettings["APIKey"]; }//APIKey
+            
             public static int RebalanceThreshold()
             { return int.Parse(System.Configuration.ConfigurationManager.AppSettings["RebalanceThreshold"]); }//RebalanceThreshold
 
