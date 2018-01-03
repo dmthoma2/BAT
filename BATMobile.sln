@@ -5,6 +5,16 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BATMobile", "BATMobile\BATMobile.csproj", "{4355EA6A-1EC6-4837-8FB8-613D51E1BD2C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAT_Services", "BAT_Services\BAT_Services.csproj", "{03F41775-FE66-47AF-B1D2-DDCDE93D0CF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAT_Repository", "BAT_Repository\BAT_Repository.csproj", "{3EA71658-F4E3-4AF7-8451-B6A3F6DB51A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAT_Models", "BAT_Models\BAT_Models.csproj", "{AE265BAD-6239-401C-94ED-F6F2AE535044}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAT_Tests", "BAT_Tests\BAT_Tests.csproj", "{8F687902-FE9C-4717-8DC8-E78F67F4690B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BAT_Utilities", "BAT_Utilities\BAT_Utilities.csproj", "{800A09F7-4B0D-4E1E-80B3-A0090B9DA21D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +25,26 @@ Global
 		{4355EA6A-1EC6-4837-8FB8-613D51E1BD2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4355EA6A-1EC6-4837-8FB8-613D51E1BD2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4355EA6A-1EC6-4837-8FB8-613D51E1BD2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03F41775-FE66-47AF-B1D2-DDCDE93D0CF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03F41775-FE66-47AF-B1D2-DDCDE93D0CF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03F41775-FE66-47AF-B1D2-DDCDE93D0CF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03F41775-FE66-47AF-B1D2-DDCDE93D0CF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EA71658-F4E3-4AF7-8451-B6A3F6DB51A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EA71658-F4E3-4AF7-8451-B6A3F6DB51A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EA71658-F4E3-4AF7-8451-B6A3F6DB51A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EA71658-F4E3-4AF7-8451-B6A3F6DB51A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE265BAD-6239-401C-94ED-F6F2AE535044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE265BAD-6239-401C-94ED-F6F2AE535044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE265BAD-6239-401C-94ED-F6F2AE535044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE265BAD-6239-401C-94ED-F6F2AE535044}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F687902-FE9C-4717-8DC8-E78F67F4690B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F687902-FE9C-4717-8DC8-E78F67F4690B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F687902-FE9C-4717-8DC8-E78F67F4690B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F687902-FE9C-4717-8DC8-E78F67F4690B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{800A09F7-4B0D-4E1E-80B3-A0090B9DA21D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{800A09F7-4B0D-4E1E-80B3-A0090B9DA21D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{800A09F7-4B0D-4E1E-80B3-A0090B9DA21D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{800A09F7-4B0D-4E1E-80B3-A0090B9DA21D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

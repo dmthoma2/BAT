@@ -1,0 +1,6 @@
+C:\Users\w3iner\source\repos\BATMobile\BAT_Utilities\bin\Debug\netcoreapp2.0\BAT_Utilities.deps.json
+C:\Users\w3iner\source\repos\BATMobile\BAT_Utilities\bin\Debug\netcoreapp2.0\BAT_Utilities.dll
+C:\Users\w3iner\source\repos\BATMobile\BAT_Utilities\obj\Debug\netcoreapp2.0\BAT_Utilities.csprojResolveAssemblyReference.cache
+C:\Users\w3iner\source\repos\BATMobile\BAT_Utilities\obj\Debug\netcoreapp2.0\BAT_Utilities.csproj.CoreCompileInputs.cache
+C:\Users\w3iner\source\repos\BATMobile\BAT_Utilities\obj\Debug\netcoreapp2.0\BAT_Utilities.AssemblyInfoInputs.cache
+C:\Users\w3iner\source\repos\BATMobile\BAT_Utilities\obj\Debug\netcoreapp2.0\BAT_Utilities.AssemblyInfo.cs
