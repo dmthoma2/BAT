@@ -1,13 +1,13 @@
-Binance Auto-Trader - A automated algorithm trading application for 
+Binance Auto-Trader - An automated algorithm trading application for 
 use with the Binance API.
 
 Binance Auto-Trader (BAT) is a configuration file driven console 
 application with a modular service oriented architecture back end. 
-This back end will be coded to handle various trading algorithms as 
+This back end is coded to handle various trading algorithms as 
 well as actual trade execution and price information API calls.
 
 Initial Algorithms
-1) "REBALANCE": Rebalancing stock market portfolios have proven 
+1) "REBALANCE": Rebalancing stock market portfolios has proven 
 consistently over time to improve risk adjusted returns and provide
 alpha during times of high market volatility.  Rebalancing 
 portfolios ensures that assets relatively over performing are sold

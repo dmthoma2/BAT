@@ -9,6 +9,9 @@ namespace BAT_Models
     /// </summary>
     public class Parameters
     {
+        public bool SuccessfullyPopulated { get; set; }
+        public string ErrorMessage = string.Empty;
+
         public string BinanceAPIAddress { get; set; }
         public string APIKey { get; set; }
 
