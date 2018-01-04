@@ -13,8 +13,12 @@ namespace BATMobile
     {
         public override void Load()
         {
-            Bind<IParametersService>().To<ParametersService>();
             Bind<IAppSettings>().To<AppSettings>();
+
+            Bind<IParametersService>().To<ParametersService>();            
+            Bind<IAlgorithmService>().To<AlgorithmService>();
+            Bind<IInformationService>().To<InformationService>();
+            Bind<ITradeService>().To<TradeService>();
         }
     }//NinjectBindings
 }

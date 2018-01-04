@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlgorithmService.cs" />
+    <Compile Include="EmailService.cs" />
     <Compile Include="InformationService.cs" />
     <Compile Include="ParametersService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

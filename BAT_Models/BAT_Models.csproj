@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\REBALANCE_Params.cs" />
+    <Compile Include="API\Trade.cs" />
+    <Compile Include="API\TradeResult.cs" />
     <Compile Include="Exceptions\ConfigurationException.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
