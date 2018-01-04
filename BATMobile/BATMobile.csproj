@@ -59,8 +59,12 @@
       <Name>BAT_Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\BAT_Services\BAT_Services.csproj">
-      <Project>{03f41775-fe66-47af-b1d2-ddcde93d0cf9}</Project>
+      <Project>{f77806a2-e90e-4514-8615-d9aa8d7a531c}</Project>
       <Name>BAT_Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BAT_Utilities\BAT_Utilities.csproj">
+      <Project>{044139ec-ce5f-4de4-b477-55ca43190703}</Project>
+      <Name>BAT_Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
