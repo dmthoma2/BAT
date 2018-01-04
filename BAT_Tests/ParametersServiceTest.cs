@@ -23,34 +23,43 @@ namespace BAT_Tests
            _parametersService = new ParametersService(_appSettings.Object);
         }
 
-        [TestMethod]
-        public void GetAPIInformationTest()
+        public void SetDefaultAppSettings()
         {
             _appSettings.Setup(x => x.BinanceAPIAddress()).Returns("https://api.binance.com/");
             _appSettings.Setup(x => x.APIKey()).Returns("abc123");
+            _appSettings.Setup(x => x.RebalanceThreshold()).Returns(5);
+            _appSettings.Setup(x => x.BaseCurrency()).Returns("BTC");
+            _appSettings.Setup(x => x.BaseCurrencyAllocation()).Returns(10);
+            _appSettings.Setup(x => x.BaseCurrencyInitialAllocation()).Returns(0);
+        }
+
+        [TestMethod]
+        public void GetAPIInformationTest()
+        {
+            SetDefaultAppSettings();
 
             var output = _parametersService.GetAPIInformation(new Parameters());
 
             Assert.AreEqual("https://api.binance.com/", output.BinanceAPIAddress);
             Assert.AreEqual("abc123", output.APIKey);
 
+            SetDefaultAppSettings();
             _appSettings.Setup(x => x.BinanceAPIAddress()).Returns(string.Empty);
-            _appSettings.Setup(x => x.APIKey()).Returns("abc123");
-
+            
             try
             { output = _parametersService.GetAPIInformation(new Parameters()); Assert.Fail(); }
             catch(ConfigurationException ce)
             { Assert.IsTrue(ce.Message.Contains("No BinanceAPIAddress supplied.  A URL must be provided to connect.")); }//catch
 
+            SetDefaultAppSettings();
             _appSettings.Setup(x => x.BinanceAPIAddress()).Returns((string)null);
-            _appSettings.Setup(x => x.APIKey()).Returns("abc123");
 
             try
             { output = _parametersService.GetAPIInformation(new Parameters()); Assert.Fail(); }
             catch (ConfigurationException ce)
             { Assert.IsTrue(ce.Message.Contains("No BinanceAPIAddress supplied.  A URL must be provided to connect.")); }//catch
 
-            _appSettings.Setup(x => x.BinanceAPIAddress()).Returns(("https://api.binance.com/"));
+            SetDefaultAppSettings();
             _appSettings.Setup(x => x.APIKey()).Returns(string.Empty);
 
             try
@@ -58,7 +67,7 @@ namespace BAT_Tests
             catch (ConfigurationException ce)
             { Assert.IsTrue(ce.Message.Contains("No APIKey supplied.  A key must be provided to pass security crednetials with Binance.")); }//catch
 
-            _appSettings.Setup(x => x.BinanceAPIAddress()).Returns(("https://api.binance.com/"));
+            SetDefaultAppSettings();
             _appSettings.Setup(x => x.APIKey()).Returns((string)null);
 
             try
@@ -71,7 +80,70 @@ namespace BAT_Tests
         [TestMethod]
         public void GetBaseCurrencyInformationTest()
         {
-            //TODO
+            SetDefaultAppSettings();
+            var output = _parametersService.GetBaseCurrencyInformation(new Parameters());
+
+            Assert.AreEqual(5, output.RebalanceThreshold);
+            Assert.AreEqual("BTC", output.BaseCurrency);
+            Assert.AreEqual(10, output.BaseCurrencyAllocation);
+            Assert.AreEqual(0, output.BaseCurrencyInitialAllocation);
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.BaseCurrencyAllocation()).Returns(90);
+            _appSettings.Setup(x => x.BaseCurrencyInitialAllocation()).Returns(-10);
+            output = _parametersService.GetBaseCurrencyInformation(new Parameters());
+
+            Assert.AreEqual(5, output.RebalanceThreshold);
+            Assert.AreEqual("BTC", output.BaseCurrency);
+            Assert.AreEqual(90, output.BaseCurrencyAllocation);
+            Assert.AreEqual(0, output.BaseCurrencyInitialAllocation);
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.RebalanceThreshold()).Returns(4);
+            
+            try
+            { output = _parametersService.GetBaseCurrencyInformation(new Parameters()); Assert.Fail(); }
+            catch (ConfigurationException ce)
+            { Assert.IsTrue(ce.Message.Contains("Reblance threashold has a minimum value of 5.")); }//catch
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.RebalanceThreshold()).Returns(0);
+
+            try
+            { output = _parametersService.GetBaseCurrencyInformation(new Parameters()); Assert.Fail(); }
+            catch (ConfigurationException ce)
+            { Assert.IsTrue(ce.Message.Contains("Reblance threashold has a minimum value of 5.")); }//catch
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.BaseCurrency()).Returns((string)null);
+           
+            try
+            { output = _parametersService.GetBaseCurrencyInformation(new Parameters()); Assert.Fail(); }
+            catch (ConfigurationException ce)
+            { Assert.IsTrue(ce.Message.Contains("No base currency supplied.  This is a required field for rebalancing.")); }//catch
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.BaseCurrency()).Returns(string.Empty);
+
+            try
+            { output = _parametersService.GetBaseCurrencyInformation(new Parameters()); Assert.Fail(); }
+            catch (ConfigurationException ce)
+            { Assert.IsTrue(ce.Message.Contains("No base currency supplied.  This is a required field for rebalancing.")); }//catch
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.BaseCurrencyAllocation()).Returns(9);
+            try
+            { output = _parametersService.GetBaseCurrencyInformation(new Parameters()); Assert.Fail(); }
+            catch (ConfigurationException ce)
+            { Assert.IsTrue(ce.Message.Contains("Base Currency must have an allocation between 10 and 90.")); }//catch
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.BaseCurrencyAllocation()).Returns(91);
+            try
+            { output = _parametersService.GetBaseCurrencyInformation(new Parameters()); Assert.Fail(); }
+            catch (ConfigurationException ce)
+            { Assert.IsTrue(ce.Message.Contains("Base Currency must have an allocation between 10 and 90.")); }//catch
+            
         }//GetBaseCurrencyInformationTest
 
         [TestMethod]
@@ -91,5 +163,11 @@ namespace BAT_Tests
         {
             //TODO
         }//GetNotificationSettingsTest
+
+        [TestMethod]
+        public void VerifyREBALANCETotalsTest()
+        {
+            //TODO
+        }//VerifyREBALANCETotalsTest
     }
 }

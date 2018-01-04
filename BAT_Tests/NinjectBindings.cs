@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ninject;
 using BAT_Services;
+using BAT_Utilities;
 
 namespace BAT_Tests
 {

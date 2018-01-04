@@ -15,6 +15,7 @@ namespace BAT_Services
         Parameters GetCurrencyInformation(Parameters parameters);
         Parameters GetCircuitBreakerInformation(Parameters parameters);
         Parameters GetNotificationSettings(Parameters parameters);
+        Parameters VerifyREBALANCETotals(Parameters parameters);
 
     }//IParametersService
 
@@ -89,7 +90,23 @@ namespace BAT_Services
         /// </summary>
         public Parameters GetBaseCurrencyInformation(Parameters parameters)
         {
-            //TODO
+            parameters.RebalanceThreshold = _appSettings.RebalanceThreshold();
+
+            if(parameters.RebalanceThreshold < 5)
+            { throw new ConfigurationException("Reblance threashold has a minimum value of 5."); }//if
+
+            parameters.BaseCurrency = _appSettings.BaseCurrency();
+            if (string.IsNullOrWhiteSpace(parameters.BaseCurrency))
+            { throw new ConfigurationException("No base currency supplied.  This is a required field for rebalancing."); }//if
+
+            parameters.BaseCurrencyAllocation = _appSettings.BaseCurrencyAllocation();
+            if(parameters.BaseCurrencyAllocation < 10 || parameters.BaseCurrencyAllocation > 90)
+            { throw new ConfigurationException("Base Currency must have an allocation between 10 and 90."); }//if
+
+            parameters.BaseCurrencyInitialAllocation = _appSettings.BaseCurrencyInitialAllocation();
+            if (parameters.BaseCurrencyInitialAllocation < 0 )
+            { parameters.BaseCurrencyInitialAllocation = 0; }//if
+            
             return parameters;
         }//GetBaseCurrencyInformation
 
@@ -119,6 +136,15 @@ namespace BAT_Services
             //TODO
             return parameters;
         }//GetNotificationSettings
+
+        /// <summary>
+        /// Ensures that individual allocation totals sum up to 100%.
+        /// </summary>
+        public Parameters VerifyREBALANCETotals(Parameters parameters)
+        {
+            //TODO
+            return parameters;
+        }//VerifyREBALANCETotals
 
     }//ParametersService
 }

@@ -55,6 +55,7 @@ namespace BATMobile
             var output = _iParametersService.GetConfigurationSettings();
 
             //Send loading email if indicated.
+            //TODO
 
             return output;
         }//LoadParameters
@@ -67,6 +68,7 @@ namespace BATMobile
             var output = _iAlgorithmService.ExecuteREBALANCE(new REBALANCE_Params(parameters));
 
             //Send algorithm email
+            //TODO
 
             return output;
         }//ExecuteAlgorithm
@@ -79,6 +81,7 @@ namespace BATMobile
             }//foreach
 
             //Send results email
+            //TODO
 
         }//ExecuteTrades
 
