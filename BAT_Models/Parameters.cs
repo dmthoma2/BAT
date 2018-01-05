@@ -14,6 +14,7 @@ namespace BAT_Models
 
         public string BinanceAPIAddress { get; set; }
         public string APIKey { get; set; }
+        public string APITradingKey { get; set; }
 
         public int RebalanceThreshold { get; set; }
 

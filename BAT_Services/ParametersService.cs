@@ -12,7 +12,10 @@ namespace BAT_Services
         Parameters GetConfigurationSettings();
         Parameters GetAPIInformation(Parameters parameters);
         Parameters GetBaseCurrencyInformation(Parameters parameters);
-        Parameters GetCurrencyInformation(Parameters parameters);
+        Parameters GetCurrency1Information(Parameters parameters);
+        Parameters GetCurrency2Information(Parameters parameters);
+        Parameters GetCurrency3Information(Parameters parameters);
+        Parameters GetCurrency4Information(Parameters parameters);
         Parameters GetCircuitBreakerInformation(Parameters parameters);
         Parameters GetNotificationSettings(Parameters parameters);
         Parameters VerifyREBALANCETotals(Parameters parameters);
@@ -44,7 +47,10 @@ namespace BAT_Services
 
                 output = GetAPIInformation(output);
                 output = GetBaseCurrencyInformation(output);
-                output = GetCurrencyInformation(output);
+                output = GetCurrency1Information(output);
+                output = GetCurrency2Information(output);
+                output = GetCurrency3Information(output);
+                output = GetCurrency4Information(output);
                 output = GetCircuitBreakerInformation(output);
                 output = GetNotificationSettings(output);
 
@@ -80,8 +86,14 @@ namespace BAT_Services
             parameters.APIKey = _appSettings.APIKey();
 
             if (string.IsNullOrWhiteSpace(parameters.APIKey))
-            { throw new ConfigurationException("No APIKey supplied.  A key must be provided to pass security crednetials with Binance."); }//if
-            
+            { throw new ConfigurationException("No APIKey supplied.  A key must be provided to pass security credentials with Binance."); }//if
+
+            parameters.APITradingKey = _appSettings.APITradingKey();
+
+            if (string.IsNullOrWhiteSpace(parameters.APITradingKey))
+            { throw new ConfigurationException("No APITradingKey supplied.  A key must be provided to authorize trading and account access with Binance."); }//if
+
+
             return parameters;
         }//GetAPIInformation
 
@@ -111,13 +123,93 @@ namespace BAT_Services
         }//GetBaseCurrencyInformation
 
         /// <summary>
-        /// Retrieves currency information from the app settings for "REBALANCE" trading.
+        /// Retrieves Currency1 information from the app settings for "REBALANCE" trading.
         /// </summary>
-        public Parameters GetCurrencyInformation(Parameters parameters)
+        public Parameters GetCurrency1Information(Parameters parameters)
         {
-            //TODO
+            parameters.Currency1 = _appSettings.Currency1();
+            if (string.IsNullOrWhiteSpace(parameters.Currency1))
+            { throw new ConfigurationException("No Currency1 supplied.  This is a required field for rebalancing."); }//if
+
+            parameters.Currency1Allocation = _appSettings.Currency1Allocation();
+            if (parameters.Currency1Allocation < 10 || parameters.Currency1Allocation > 90)
+            { throw new ConfigurationException("Currency1 must have an allocation between 10 and 90."); }//if
+
+            parameters.Currency1InitialAllocation = _appSettings.Currency1InitialAllocation();
+            if (parameters.Currency1InitialAllocation < 0)
+            { parameters.Currency1InitialAllocation = 0; }//if
+
             return parameters;
-        }//GetCurrencyInformation
+        }//GetCurrency1Information
+
+        /// <summary>
+        /// Retrieves Currency2 information from the app settings for "REBALANCE" trading.
+        /// </summary>
+        public Parameters GetCurrency2Information(Parameters parameters)
+        {
+            parameters.Currency2 = _appSettings.Currency2();
+            if (string.IsNullOrWhiteSpace(parameters.Currency2))
+            {
+                parameters.Currency2 = string.Empty;
+                return parameters;
+            }//if
+
+            parameters.Currency2Allocation = _appSettings.Currency2Allocation();
+            if (parameters.Currency2Allocation < 10 || parameters.Currency2Allocation > 90)
+            { throw new ConfigurationException("Currency2 must have an allocation between 10 and 90."); }//if
+
+            parameters.Currency2InitialAllocation = _appSettings.Currency2InitialAllocation();
+            if (parameters.Currency2InitialAllocation < 0)
+            { parameters.Currency2InitialAllocation = 0; }//if
+
+            return parameters;
+        }//GetCurrency2Information
+
+        /// <summary>
+        /// Retrieves Currency3 information from the app settings for "REBALANCE" trading.
+        /// </summary>
+        public Parameters GetCurrency3Information(Parameters parameters)
+        {
+            parameters.Currency3 = _appSettings.Currency3();
+            if (string.IsNullOrWhiteSpace(parameters.Currency3))
+            {
+                parameters.Currency3 = string.Empty;
+                return parameters;
+            }//if
+
+            parameters.Currency3Allocation = _appSettings.Currency3Allocation();
+            if (parameters.Currency3Allocation < 10 || parameters.Currency3Allocation > 90)
+            { throw new ConfigurationException("Currency3 must have an allocation between 10 and 90."); }//if
+
+            parameters.Currency3InitialAllocation = _appSettings.Currency3InitialAllocation();
+            if (parameters.Currency3InitialAllocation < 0)
+            { parameters.Currency3InitialAllocation = 0; }//if
+
+            return parameters;
+        }//GetCurrency3Information
+
+        /// <summary>
+        /// Retrieves Currency4 information from the app settings for "REBALANCE" trading.
+        /// </summary>
+        public Parameters GetCurrency4Information(Parameters parameters)
+        {
+            parameters.Currency4 = _appSettings.Currency4();
+            if (string.IsNullOrWhiteSpace(parameters.Currency4))
+            {
+                parameters.Currency4 = string.Empty;
+                return parameters;
+            }//if
+
+            parameters.Currency4Allocation = _appSettings.Currency4Allocation();
+            if (parameters.Currency4Allocation < 10 || parameters.Currency4Allocation > 90)
+            { throw new ConfigurationException("Currency4 must have an allocation between 10 and 90."); }//if
+
+            parameters.Currency4InitialAllocation = _appSettings.Currency4InitialAllocation();
+            if (parameters.Currency4InitialAllocation < 0)
+            { parameters.Currency4InitialAllocation = 0; }//if
+
+            return parameters;
+        }//GetCurrency4Information
 
         /// <summary>
         /// Retrieves circuit breaker information from the app settings.

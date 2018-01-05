@@ -10,6 +10,7 @@ namespace BAT_Utilities
     {
         string BinanceAPIAddress();
         string APIKey();
+        string APITradingKey();
         int RebalanceThreshold();
         string BaseCurrency();
         int BaseCurrencyAllocation();
@@ -49,6 +50,9 @@ namespace BAT_Utilities
 
         public string APIKey()
         { return System.Configuration.ConfigurationManager.AppSettings["APIKey"]; }//APIKey
+
+        public string APITradingKey()
+        { return System.Configuration.ConfigurationManager.AppSettings["APITradingKey"]; }//APITradingKey
 
         public int RebalanceThreshold()
         { return int.Parse(System.Configuration.ConfigurationManager.AppSettings["RebalanceThreshold"]); }//RebalanceThreshold
