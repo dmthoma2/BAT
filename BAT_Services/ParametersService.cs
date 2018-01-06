@@ -18,7 +18,7 @@ namespace BAT_Services
         Parameters GetCurrency4Information(Parameters parameters);
         Parameters GetCircuitBreakerInformation(Parameters parameters);
         Parameters GetNotificationSettings(Parameters parameters);
-        Parameters VerifyREBALANCETotals(Parameters parameters);
+        void VerifyREBALANCETotals(Parameters parameters);
 
     }//IParametersService
 
@@ -216,7 +216,17 @@ namespace BAT_Services
         /// </summary>
         public Parameters GetCircuitBreakerInformation(Parameters parameters)
         {
-            //TODO
+            parameters.UseCircuitBreaker = _appSettings.UseCircuitBreaker();
+            parameters.CircuitBreakerTrades = _appSettings.CircuitBreakerTrades();
+
+            if(parameters.CircuitBreakerTrades < 1)
+            { parameters.CircuitBreakerTrades = 1; }//if
+
+            parameters.CircuitBreakerHours = _appSettings.CircuitBreakerHours();
+
+            if(parameters.CircuitBreakerHours < 1)
+            { parameters.CircuitBreakerHours = 1; }//if
+            
             return parameters;
         }//GetCircuitBreakerInformation
 
@@ -225,17 +235,54 @@ namespace BAT_Services
         /// </summary>
         public Parameters GetNotificationSettings(Parameters parameters)
         {
-            //TODO
+            parameters.BATsEmailAddress = _appSettings.BATsEmailAddress();
+
+            if (string.IsNullOrWhiteSpace(parameters.BATsEmailAddress) || !parameters.BATsEmailAddress.Contains("@"))
+            { parameters.BATsEmailAddress = "BATMOBILE@noreply.com"; }//if
+
+            parameters.SMTPServer = _appSettings.SMTPServer();
+
+            if (string.IsNullOrWhiteSpace(parameters.SMTPServer))
+            { parameters.SMTPServer = "smtp.gmail.com"; }//if
+
+            parameters.InformationEmailAddress = _appSettings.InformationEmailAddress();                  
+            parameters.SendLoadingEmail = _appSettings.SendLoadingEmail();
+            parameters.SendAlgorithmEmail = _appSettings.SendAlgorithmEmail();
+            parameters.SendTradeExecutionEmail = _appSettings.SendTradeExecutionEmail();
+
+            if (string.IsNullOrWhiteSpace(parameters.InformationEmailAddress))
+            {
+                if (parameters.SendLoadingEmail || parameters.SendAlgorithmEmail || parameters.SendTradeExecutionEmail)
+                { throw new ConfigurationException("An email address is required to send emails."); }//if
+                else
+                { parameters.InformationEmailAddress = string.Empty; }//else
+            }//if
+
+            parameters.BuyAndHoldComparison = _appSettings.BuyAndHoldComparison();
+            parameters.FailOnError = _appSettings.FailOnError();
+
+            parameters.HistoryFile = _appSettings.HistoryFile();
+
+            if (string.IsNullOrWhiteSpace(parameters.HistoryFile))
+            { throw new ConfigurationException("A history file location is required."); }//if
+            
             return parameters;
         }//GetNotificationSettings
 
         /// <summary>
         /// Ensures that individual allocation totals sum up to 100%.
         /// </summary>
-        public Parameters VerifyREBALANCETotals(Parameters parameters)
+        public void VerifyREBALANCETotals(Parameters parameters)
         {
-            //TODO
-            return parameters;
+            int AllocationTotal = parameters.BaseCurrencyAllocation + parameters.Currency1Allocation +
+                parameters.Currency2Allocation + parameters.Currency3Allocation + 
+                parameters.Currency4Allocation;
+
+            if(AllocationTotal != 100)
+            {
+                throw new ConfigurationException("Total allocation of all currencies must equal 100!.");
+            }//if
+                       
         }//VerifyREBALANCETotals
 
     }//ParametersService

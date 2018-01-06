@@ -38,10 +38,10 @@ namespace BATMobile
 
             //Parse configuration into a model
             var parameters = prog.LoadParameters();
-            
+                   
             //Call trading algorithm
             var trades = prog.ExecuteAlgorithm(parameters);
-
+       
             //Execute trades based on results
             prog.ExecuteTrades(trades);
 
@@ -54,9 +54,11 @@ namespace BATMobile
         {
             var output = _iParametersService.GetConfigurationSettings();
 
+            //Log Parameters Loading + Errors
+
             //Send loading email if indicated.
             //TODO
-
+            
             return output;
         }//LoadParameters
 
@@ -65,10 +67,17 @@ namespace BATMobile
         /// </summary>
         public List<Trade> ExecuteAlgorithm(Parameters parameters)
         {
+            //Find Prices
+
+            //Log Price Finding
+
             var output = _iAlgorithmService.ExecuteREBALANCE(new REBALANCE_Params(parameters));
+
+            //Log Algorithm Results
 
             //Send algorithm email
             //TODO
+               
 
             return output;
         }//ExecuteAlgorithm
@@ -79,6 +88,8 @@ namespace BATMobile
             {
                 var result = _iTradeService.ExecuteTrade(trade);
             }//foreach
+            
+            //Log Results
 
             //Send results email
             //TODO

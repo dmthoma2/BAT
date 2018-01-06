@@ -50,5 +50,6 @@ namespace BAT_Models
         public bool SendAlgorithmEmail { get; set; }
         public bool SendTradeExecutionEmail { get; set; }
         public bool FailOnError { get; set; }
+        public string HistoryFile { get; set; }
     }//Parameters
 }

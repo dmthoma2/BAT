@@ -38,6 +38,7 @@ namespace BAT_Utilities
         bool SendAlgorithmEmail();
         bool SendTradeExecutionEmail();
         bool FailOnError();
+        string HistoryFile();
     }//IAppSettings
 
     /// <summary>
@@ -134,6 +135,10 @@ namespace BAT_Utilities
 
         public bool FailOnError()
         { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["FailOnError"]); }//FailOnError
+
+        public string HistoryFile()
+        { return System.Configuration.ConfigurationManager.AppSettings["HistoryFile"]; }//HistoryFile
+        
 
     }//AppSettings
 }
