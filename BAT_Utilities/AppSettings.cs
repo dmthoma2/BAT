@@ -11,7 +11,21 @@ namespace BAT_Utilities
         string BinanceAPIAddress();
         string APIKey();
         string APITradingKey();
-        int RebalanceThreshold();
+        int RebalanceThreshold();        
+        bool UseCircuitBreaker();
+        int CircuitBreakerTrades();
+        int CircuitBreakerHours();
+        string BATsEmailAddress();
+        string SMTPServer();
+        string InformationEmailAddress();
+        bool BuyAndHoldComparison();
+        bool SendLoadingEmail();
+        bool SendAlgorithmEmail();
+        bool SendTradeExecutionEmail();
+        bool FailOnError();
+        string HistoryFile();
+        string Algo();
+
         string BaseCurrency();
         int BaseCurrencyAllocation();
         decimal BaseCurrencyInitialAllocation();
@@ -27,18 +41,6 @@ namespace BAT_Utilities
         string Currency4();
         int Currency4Allocation();
         decimal Currency4InitialAllocation();
-        bool UseCircuitBreaker();
-        int CircuitBreakerTrades();
-        int CircuitBreakerHours();
-        string BATsEmailAddress();
-        string SMTPServer();
-        string InformationEmailAddress();
-        bool BuyAndHoldComparison();
-        bool SendLoadingEmail();
-        bool SendAlgorithmEmail();
-        bool SendTradeExecutionEmail();
-        bool FailOnError();
-        string HistoryFile();
     }//IAppSettings
 
     /// <summary>
@@ -57,6 +59,47 @@ namespace BAT_Utilities
 
         public int RebalanceThreshold()
         { return int.Parse(System.Configuration.ConfigurationManager.AppSettings["RebalanceThreshold"]); }//RebalanceThreshold
+                
+        public bool UseCircuitBreaker()
+        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseCircuitBreaker"]); }//UseCircuitBreaker
+
+        public int CircuitBreakerTrades()
+        { return int.Parse(System.Configuration.ConfigurationManager.AppSettings["CircuitBreakerTrades"]); }//CircuitBreakerTrades
+
+        public int CircuitBreakerHours()
+        { return int.Parse(System.Configuration.ConfigurationManager.AppSettings["CircuitBreakerHours"]); }//CircuitBreakerHours
+
+        public string BATsEmailAddress()
+        { return System.Configuration.ConfigurationManager.AppSettings["BATsEmailAddress"]; }//BATsEmailAddress
+
+        public string SMTPServer()
+        { return System.Configuration.ConfigurationManager.AppSettings["SMTPServer"]; }//SMTPServer
+
+        public string InformationEmailAddress()
+        { return System.Configuration.ConfigurationManager.AppSettings["InformationEmailAddress"]; }//InformationEmailAddress
+
+        public bool BuyAndHoldComparison()
+        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["BuyAndHoldComparison"]); }//BuyAndHoldComparison
+
+        public bool SendLoadingEmail()
+        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["SendLoadingEmail"]); }//SendLoadingEmail
+
+        public bool SendAlgorithmEmail()
+        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["SendAlgorithmEmail"]); }//SendAlgorithmEmail
+
+        public bool SendTradeExecutionEmail()
+        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["SendTradeExecutionEmail"]); }//SendTradeExecutionEmail
+
+        public bool FailOnError()
+        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["FailOnError"]); }//FailOnError
+
+        public string HistoryFile()
+        { return System.Configuration.ConfigurationManager.AppSettings["HistoryFile"]; }//HistoryFile
+
+        public string Algo()
+        { return System.Configuration.ConfigurationManager.AppSettings["Algo"]; }//Algo
+
+
 
         public string BaseCurrency()
         { return System.Configuration.ConfigurationManager.AppSettings["BaseCurrency"]; }//BaseCurrency
@@ -103,42 +146,6 @@ namespace BAT_Utilities
         public decimal Currency4InitialAllocation()
         { return decimal.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency4InitialAllocation"]); }//Currency4InitialAllocation
 
-        public bool UseCircuitBreaker()
-        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["UseCircuitBreaker"]); }//UseCircuitBreaker
-
-        public int CircuitBreakerTrades()
-        { return int.Parse(System.Configuration.ConfigurationManager.AppSettings["CircuitBreakerTrades"]); }//CircuitBreakerTrades
-
-        public int CircuitBreakerHours()
-        { return int.Parse(System.Configuration.ConfigurationManager.AppSettings["CircuitBreakerHours"]); }//CircuitBreakerHours
-
-        public string BATsEmailAddress()
-        { return System.Configuration.ConfigurationManager.AppSettings["BATsEmailAddress"]; }//BATsEmailAddress
-
-        public string SMTPServer()
-        { return System.Configuration.ConfigurationManager.AppSettings["SMTPServer"]; }//SMTPServer
-
-        public string InformationEmailAddress()
-        { return System.Configuration.ConfigurationManager.AppSettings["InformationEmailAddress"]; }//InformationEmailAddress
-
-        public bool BuyAndHoldComparison()
-        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["BuyAndHoldComparison"]); }//BuyAndHoldComparison
-
-        public bool SendLoadingEmail()
-        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["SendLoadingEmail"]); }//SendLoadingEmail
-
-        public bool SendAlgorithmEmail()
-        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["SendAlgorithmEmail"]); }//SendAlgorithmEmail
-
-        public bool SendTradeExecutionEmail()
-        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["SendTradeExecutionEmail"]); }//SendTradeExecutionEmail
-
-        public bool FailOnError()
-        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["FailOnError"]); }//FailOnError
-
-        public string HistoryFile()
-        { return System.Configuration.ConfigurationManager.AppSettings["HistoryFile"]; }//HistoryFile
-        
 
     }//AppSettings
 }

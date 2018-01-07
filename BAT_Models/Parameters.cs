@@ -16,6 +16,21 @@ namespace BAT_Models
         public string APIKey { get; set; }
         public string APITradingKey { get; set; }
 
+        public bool UseCircuitBreaker { get; set; }
+        public int CircuitBreakerTrades { get; set; }
+        public int CircuitBreakerHours { get; set; }
+
+        public string BATsEmailAddress { get; set; }
+        public string SMTPServer { get; set; }
+        public string InformationEmailAddress { get; set; }
+        public bool BuyAndHoldComparison { get; set; }
+        public bool SendLoadingEmail { get; set; }
+        public bool SendAlgorithmEmail { get; set; }
+        public bool SendTradeExecutionEmail { get; set; }
+        public bool FailOnError { get; set; }
+        public string HistoryFile { get; set; }
+        public string Algo { get; set; }
+
         public int RebalanceThreshold { get; set; }
 
         public string BaseCurrency { get; set; }
@@ -38,18 +53,9 @@ namespace BAT_Models
         public int Currency4Allocation { get; set; }
         public decimal Currency4InitialAllocation { get; set; }
 
-        public bool UseCircuitBreaker { get; set; }
-        public int CircuitBreakerTrades { get; set; }
-        public int CircuitBreakerHours { get; set; }
-
-        public string BATsEmailAddress { get; set; }
-        public string SMTPServer { get; set; }
-        public string InformationEmailAddress { get; set; }
-        public bool BuyAndHoldComparison { get; set; }
-        public bool SendLoadingEmail { get; set; }
-        public bool SendAlgorithmEmail { get; set; }
-        public bool SendTradeExecutionEmail { get; set; }
-        public bool FailOnError { get; set; }
-        public string HistoryFile { get; set; }
+        public static class TradingAlgorithms
+        {
+            public const string REBALANCE = "REBALANCE";
+        }
     }//Parameters
 }

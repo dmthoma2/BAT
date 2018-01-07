@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Ninject;
 using BAT_Services;
 using BAT_Utilities;
+using BAT_Repository;
 
 namespace BATMobile
 {
@@ -15,10 +16,14 @@ namespace BATMobile
         {
             Bind<IAppSettings>().To<AppSettings>();
 
+            Bind<IFileIORepository>().To<FileIORepository>();
+
             Bind<IParametersService>().To<ParametersService>();            
             Bind<IAlgorithmService>().To<AlgorithmService>();
             Bind<IInformationService>().To<InformationService>();
             Bind<ITradeService>().To<TradeService>();
+            Bind<ILogService>().To<LogService>();
+            Bind<IEmailService>().To<EmailService>();
         }
     }//NinjectBindings
 }

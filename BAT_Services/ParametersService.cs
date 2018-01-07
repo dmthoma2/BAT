@@ -11,13 +11,16 @@ namespace BAT_Services
     {
         Parameters GetConfigurationSettings();
         Parameters GetAPIInformation(Parameters parameters);
+        Parameters GetNotificationSettings(Parameters parameters);
+        Parameters GetAlgorithmType(Parameters parameters);
+
+
         Parameters GetBaseCurrencyInformation(Parameters parameters);
         Parameters GetCurrency1Information(Parameters parameters);
         Parameters GetCurrency2Information(Parameters parameters);
         Parameters GetCurrency3Information(Parameters parameters);
         Parameters GetCurrency4Information(Parameters parameters);
         Parameters GetCircuitBreakerInformation(Parameters parameters);
-        Parameters GetNotificationSettings(Parameters parameters);
         void VerifyREBALANCETotals(Parameters parameters);
 
     }//IParametersService
@@ -44,15 +47,22 @@ namespace BAT_Services
             {
                 output.SuccessfullyPopulated = true;
                 output.ErrorMessage = string.Empty;
-
                 output = GetAPIInformation(output);
-                output = GetBaseCurrencyInformation(output);
-                output = GetCurrency1Information(output);
-                output = GetCurrency2Information(output);
-                output = GetCurrency3Information(output);
-                output = GetCurrency4Information(output);
                 output = GetCircuitBreakerInformation(output);
                 output = GetNotificationSettings(output);
+                output = GetAlgorithmType(output);
+                
+                if(output.Algo == Parameters.TradingAlgorithms.REBALANCE)
+                {
+                    output = GetBaseCurrencyInformation(output);
+                    output = GetCurrency1Information(output);
+                    output = GetCurrency2Information(output);
+                    output = GetCurrency3Information(output);
+                    output = GetCurrency4Information(output);
+                    VerifyREBALANCETotals(output);
+                }//if
+                
+                //TODO Place new algorithms configuration settings here
 
             }//try
             catch(ConfigurationException ce)
@@ -268,6 +278,23 @@ namespace BAT_Services
             
             return parameters;
         }//GetNotificationSettings
+
+        /// <summary>
+        /// Parses the algorithm type to be used.
+        /// </summary>
+        public Parameters GetAlgorithmType(Parameters parameters)
+        {
+            var algo = _appSettings.Algo();
+            if (algo != null)
+            { parameters.Algo = algo.Trim().ToUpper(); }//if
+
+            if(parameters.Algo != Parameters.TradingAlgorithms.REBALANCE)
+            {
+                throw new ConfigurationException("Unrecognized trading algorithm.");
+            }//if
+            
+            return parameters;
+        }//GetAlgorithmType
 
         /// <summary>
         /// Ensures that individual allocation totals sum up to 100%.

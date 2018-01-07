@@ -27,7 +27,21 @@ namespace BAT_Tests
         {
             _appSettings.Setup(x => x.BinanceAPIAddress()).Returns("https://api.binance.com/");
             _appSettings.Setup(x => x.APIKey()).Returns("abc123");
-            _appSettings.Setup(x => x.APITradingKey()).Returns("def456");
+            _appSettings.Setup(x => x.APITradingKey()).Returns("def456");           
+            _appSettings.Setup(x => x.UseCircuitBreaker()).Returns(true);
+            _appSettings.Setup(x => x.CircuitBreakerTrades()).Returns(3);
+            _appSettings.Setup(x => x.CircuitBreakerHours()).Returns(24);
+            _appSettings.Setup(x => x.BATsEmailAddress()).Returns("test@noreply.com");
+            _appSettings.Setup(x => x.SMTPServer()).Returns("temp.smtp.com");
+            _appSettings.Setup(x => x.InformationEmailAddress()).Returns("testEmail@gmail.com");
+            _appSettings.Setup(x => x.SendLoadingEmail()).Returns(true);
+            _appSettings.Setup(x => x.SendAlgorithmEmail()).Returns(true);
+            _appSettings.Setup(x => x.SendTradeExecutionEmail()).Returns(true);
+            _appSettings.Setup(x => x.BuyAndHoldComparison()).Returns(true);
+            _appSettings.Setup(x => x.FailOnError()).Returns(true);
+            _appSettings.Setup(x => x.HistoryFile()).Returns("whatever.txt");
+            _appSettings.Setup(x => x.Algo()).Returns("REBALANCE");
+
             _appSettings.Setup(x => x.RebalanceThreshold()).Returns(5);
             _appSettings.Setup(x => x.BaseCurrency()).Returns("BTC");
             _appSettings.Setup(x => x.BaseCurrencyAllocation()).Returns(10);
@@ -44,18 +58,6 @@ namespace BAT_Tests
             _appSettings.Setup(x => x.Currency4()).Returns("ADA");
             _appSettings.Setup(x => x.Currency4Allocation()).Returns(35);
             _appSettings.Setup(x => x.Currency4InitialAllocation()).Returns(12);
-            _appSettings.Setup(x => x.UseCircuitBreaker()).Returns(true);
-            _appSettings.Setup(x => x.CircuitBreakerTrades()).Returns(3);
-            _appSettings.Setup(x => x.CircuitBreakerHours()).Returns(24);
-            _appSettings.Setup(x => x.BATsEmailAddress()).Returns("test@noreply.com");
-            _appSettings.Setup(x => x.SMTPServer()).Returns("temp.smtp.com");
-            _appSettings.Setup(x => x.InformationEmailAddress()).Returns("testEmail@gmail.com");
-            _appSettings.Setup(x => x.SendLoadingEmail()).Returns(true);
-            _appSettings.Setup(x => x.SendAlgorithmEmail()).Returns(true);
-            _appSettings.Setup(x => x.SendTradeExecutionEmail()).Returns(true);
-            _appSettings.Setup(x => x.BuyAndHoldComparison()).Returns(true);
-            _appSettings.Setup(x => x.FailOnError()).Returns(true);
-            _appSettings.Setup(x => x.HistoryFile()).Returns("whatever.txt");
         }
 
         [TestMethod]
@@ -119,6 +121,101 @@ namespace BAT_Tests
             { Assert.IsTrue(ce.Message.Contains("No APITradingKey supplied.  A key must be provided to authorize trading and account access with Binance.")); }//catch
 
         }//GetAPIInformationTest
+                
+        [TestMethod]
+        public void GetCircuitBreakerInformationTest()
+        {
+            SetDefaultAppSettings();
+            var output = _parametersService.GetCircuitBreakerInformation(new Parameters());
+
+            Assert.AreEqual(true, output.UseCircuitBreaker);
+            Assert.AreEqual(3, output.CircuitBreakerTrades);
+            Assert.AreEqual(24, output.CircuitBreakerHours);
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.UseCircuitBreaker()).Returns(false);
+            _appSettings.Setup(x => x.CircuitBreakerTrades()).Returns(0);
+            _appSettings.Setup(x => x.CircuitBreakerHours()).Returns(0);
+
+            output = _parametersService.GetCircuitBreakerInformation(new Parameters());
+            
+            Assert.AreEqual(false, output.UseCircuitBreaker);
+            Assert.AreEqual(1, output.CircuitBreakerTrades);
+            Assert.AreEqual(1, output.CircuitBreakerHours);
+
+        }//GetCircuitBreakerInformationTest
+
+        [TestMethod]
+        public void GetNotificationSettingsTest()
+        {
+            SetDefaultAppSettings();
+            var output = _parametersService.GetNotificationSettings(new Parameters());
+
+            Assert.AreEqual("test@noreply.com", output.BATsEmailAddress);
+            Assert.AreEqual("temp.smtp.com", output.SMTPServer);
+            Assert.AreEqual("testEmail@gmail.com", output.InformationEmailAddress);
+            Assert.AreEqual(true, output.SendLoadingEmail);
+            Assert.AreEqual(true, output.SendAlgorithmEmail);
+            Assert.AreEqual(true, output.SendTradeExecutionEmail);
+            Assert.AreEqual(true, output.BuyAndHoldComparison);
+            Assert.AreEqual(true, output.BuyAndHoldComparison);
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.BATsEmailAddress()).Returns((string)null);
+            _appSettings.Setup(x => x.SMTPServer()).Returns((string)null);
+            _appSettings.Setup(x => x.SendLoadingEmail()).Returns(false);
+            _appSettings.Setup(x => x.SendAlgorithmEmail()).Returns(false);
+            _appSettings.Setup(x => x.SendTradeExecutionEmail()).Returns(false);
+            _appSettings.Setup(x => x.BuyAndHoldComparison()).Returns(false);
+            _appSettings.Setup(x => x.FailOnError()).Returns(false);
+            _appSettings.Setup(x => x.InformationEmailAddress()).Returns((string)null);
+            output = _parametersService.GetNotificationSettings(new Parameters());
+
+            Assert.AreEqual("BATMOBILE@noreply.com", output.BATsEmailAddress);
+            Assert.AreEqual("smtp.gmail.com", output.SMTPServer);
+            Assert.AreEqual(string.Empty, output.InformationEmailAddress);
+            Assert.AreEqual(false, output.SendLoadingEmail);
+            Assert.AreEqual(false, output.SendAlgorithmEmail);
+            Assert.AreEqual(false, output.SendTradeExecutionEmail);
+            Assert.AreEqual(false, output.BuyAndHoldComparison);
+            Assert.AreEqual(false, output.BuyAndHoldComparison);
+            
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.InformationEmailAddress()).Returns((string)null);
+
+            try
+            { output = _parametersService.GetNotificationSettings(new Parameters()); Assert.Fail(); }
+            catch (ConfigurationException ce)
+            { Assert.IsTrue(ce.Message.Contains("An email address is required to send emails.")); }//catch
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.HistoryFile()).Returns((string)null);
+
+            try
+            { output = _parametersService.GetNotificationSettings(new Parameters()); Assert.Fail(); }
+            catch (ConfigurationException ce)
+            { Assert.IsTrue(ce.Message.Contains("A history file location is required.")); }//catch
+            
+        }//GetNotificationSettingsTest
+
+        [TestMethod]
+        public void GetAlgorithmTypeTest()
+        {
+            SetDefaultAppSettings();
+
+            var output = _parametersService.GetAlgorithmType(new Parameters());
+
+            Assert.AreEqual("REBALANCE", output.Algo);
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.Algo()).Returns((string)null);
+
+            try
+            { output = _parametersService.GetAlgorithmType(new Parameters()); Assert.Fail(); }
+            catch (ConfigurationException ce)
+            { Assert.IsTrue(ce.Message.Contains("Unrecognized trading algorithm.")); }//catch
+            
+        }//GetAlgorithmTypeTest
 
         [TestMethod]
         public void GetBaseCurrencyInformationTest()
@@ -143,7 +240,7 @@ namespace BAT_Tests
 
             SetDefaultAppSettings();
             _appSettings.Setup(x => x.RebalanceThreshold()).Returns(4);
-            
+
             try
             { output = _parametersService.GetBaseCurrencyInformation(new Parameters()); Assert.Fail(); }
             catch (ConfigurationException ce)
@@ -159,7 +256,7 @@ namespace BAT_Tests
 
             SetDefaultAppSettings();
             _appSettings.Setup(x => x.BaseCurrency()).Returns((string)null);
-           
+
             try
             { output = _parametersService.GetBaseCurrencyInformation(new Parameters()); Assert.Fail(); }
             catch (ConfigurationException ce)
@@ -186,7 +283,7 @@ namespace BAT_Tests
             { output = _parametersService.GetBaseCurrencyInformation(new Parameters()); Assert.Fail(); }
             catch (ConfigurationException ce)
             { Assert.IsTrue(ce.Message.Contains("Base Currency must have an allocation between 10 and 90.")); }//catch
-            
+
         }//GetBaseCurrencyInformationTest
 
         [TestMethod]
@@ -296,7 +393,7 @@ namespace BAT_Tests
             { output = _parametersService.GetCurrency2Information(new Parameters()); Assert.Fail(); }
             catch (ConfigurationException ce)
             { Assert.IsTrue(ce.Message.Contains("Currency2 must have an allocation between 10 and 90.")); }//catch
-            
+
         }//GetCurrency2Information
 
         [TestMethod]
@@ -351,7 +448,7 @@ namespace BAT_Tests
             { output = _parametersService.GetCurrency3Information(new Parameters()); Assert.Fail(); }
             catch (ConfigurationException ce)
             { Assert.IsTrue(ce.Message.Contains("Currency3 must have an allocation between 10 and 90.")); }//catch
-            
+
         }//GetCurrency3Information
 
         [TestMethod]
@@ -406,84 +503,9 @@ namespace BAT_Tests
             { output = _parametersService.GetCurrency4Information(new Parameters()); Assert.Fail(); }
             catch (ConfigurationException ce)
             { Assert.IsTrue(ce.Message.Contains("Currency4 must have an allocation between 10 and 90.")); }//catch
-            
+
         }//GetCurrency4Information
 
-        [TestMethod]
-        public void GetCircuitBreakerInformationTest()
-        {
-            SetDefaultAppSettings();
-            var output = _parametersService.GetCircuitBreakerInformation(new Parameters());
-
-            Assert.AreEqual(true, output.UseCircuitBreaker);
-            Assert.AreEqual(3, output.CircuitBreakerTrades);
-            Assert.AreEqual(24, output.CircuitBreakerHours);
-
-            SetDefaultAppSettings();
-            _appSettings.Setup(x => x.UseCircuitBreaker()).Returns(false);
-            _appSettings.Setup(x => x.CircuitBreakerTrades()).Returns(0);
-            _appSettings.Setup(x => x.CircuitBreakerHours()).Returns(0);
-
-            output = _parametersService.GetCircuitBreakerInformation(new Parameters());
-            
-            Assert.AreEqual(false, output.UseCircuitBreaker);
-            Assert.AreEqual(1, output.CircuitBreakerTrades);
-            Assert.AreEqual(1, output.CircuitBreakerHours);
-
-        }//GetCircuitBreakerInformationTest
-
-        [TestMethod]
-        public void GetNotificationSettingsTest()
-        {
-            SetDefaultAppSettings();
-            var output = _parametersService.GetNotificationSettings(new Parameters());
-
-            Assert.AreEqual("test@noreply.com", output.BATsEmailAddress);
-            Assert.AreEqual("temp.smtp.com", output.SMTPServer);
-            Assert.AreEqual("testEmail@gmail.com", output.InformationEmailAddress);
-            Assert.AreEqual(true, output.SendLoadingEmail);
-            Assert.AreEqual(true, output.SendAlgorithmEmail);
-            Assert.AreEqual(true, output.SendTradeExecutionEmail);
-            Assert.AreEqual(true, output.BuyAndHoldComparison);
-            Assert.AreEqual(true, output.BuyAndHoldComparison);
-
-            SetDefaultAppSettings();
-            _appSettings.Setup(x => x.BATsEmailAddress()).Returns((string)null);
-            _appSettings.Setup(x => x.SMTPServer()).Returns((string)null);
-            _appSettings.Setup(x => x.SendLoadingEmail()).Returns(false);
-            _appSettings.Setup(x => x.SendAlgorithmEmail()).Returns(false);
-            _appSettings.Setup(x => x.SendTradeExecutionEmail()).Returns(false);
-            _appSettings.Setup(x => x.BuyAndHoldComparison()).Returns(false);
-            _appSettings.Setup(x => x.FailOnError()).Returns(false);
-            _appSettings.Setup(x => x.InformationEmailAddress()).Returns((string)null);
-            output = _parametersService.GetNotificationSettings(new Parameters());
-
-            Assert.AreEqual("BATMOBILE@noreply.com", output.BATsEmailAddress);
-            Assert.AreEqual("smtp.gmail.com", output.SMTPServer);
-            Assert.AreEqual(string.Empty, output.InformationEmailAddress);
-            Assert.AreEqual(false, output.SendLoadingEmail);
-            Assert.AreEqual(false, output.SendAlgorithmEmail);
-            Assert.AreEqual(false, output.SendTradeExecutionEmail);
-            Assert.AreEqual(false, output.BuyAndHoldComparison);
-            Assert.AreEqual(false, output.BuyAndHoldComparison);
-            
-            SetDefaultAppSettings();
-            _appSettings.Setup(x => x.InformationEmailAddress()).Returns((string)null);
-
-            try
-            { output = _parametersService.GetNotificationSettings(new Parameters()); Assert.Fail(); }
-            catch (ConfigurationException ce)
-            { Assert.IsTrue(ce.Message.Contains("An email address is required to send emails.")); }//catch
-
-            SetDefaultAppSettings();
-            _appSettings.Setup(x => x.HistoryFile()).Returns((string)null);
-
-            try
-            { output = _parametersService.GetNotificationSettings(new Parameters()); Assert.Fail(); }
-            catch (ConfigurationException ce)
-            { Assert.IsTrue(ce.Message.Contains("A history file location is required.")); }//catch
-            
-        }//GetNotificationSettingsTest
 
         [TestMethod]
         public void VerifyREBALANCETotalsTest()
@@ -560,8 +582,7 @@ namespace BAT_Tests
             { _parametersService.VerifyREBALANCETotals(output); Assert.Fail(); }
             catch (ConfigurationException ce)
             { Assert.IsTrue(ce.Message.Contains("Total allocation of all currencies must equal 100!.")); }//catch
-
-
+            
         }//VerifyREBALANCETotalsTest
     }
 }

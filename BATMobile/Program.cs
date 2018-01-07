@@ -18,15 +18,21 @@ namespace BATMobile
     /// </summary>
     public class Program
     {
+        private Guid RunID;
         private IParametersService _iParametersService;
         private IAlgorithmService _iAlgorithmService;
         private ITradeService _iTradeService;
+        private ILogService _iLogService;
+        private IEmailService _iEmailService;
 
-        public Program(IParametersService iParametersService, IAlgorithmService iAlgorithmService, ITradeService iTradeService)
+        public Program(IParametersService iParametersService, IAlgorithmService iAlgorithmService, ITradeService iTradeService, ILogService iLogService, IEmailService iEmailService)
         {
             _iParametersService = iParametersService;
             _iAlgorithmService = iAlgorithmService;
             _iTradeService = iTradeService;
+            _iLogService = iLogService;
+            _iEmailService = iEmailService;
+            RunID = Guid.NewGuid();
         }
 
         static void Main(string[] args)
@@ -34,7 +40,11 @@ namespace BATMobile
             StandardKernel _kernel = new StandardKernel();
             _kernel.Load(Assembly.GetExecutingAssembly());
             
-            Program prog = new Program(_kernel.Get<IParametersService>(), _kernel.Get<IAlgorithmService>(), _kernel.Get<ITradeService>());
+            Program prog = new Program(_kernel.Get<IParametersService>(), 
+                _kernel.Get<IAlgorithmService>(), 
+                _kernel.Get<ITradeService>(),
+                _kernel.Get<ILogService>(),
+                _kernel.Get<IEmailService>());
 
             //Parse configuration into a model
             var parameters = prog.LoadParameters();
@@ -53,8 +63,6 @@ namespace BATMobile
         public Parameters LoadParameters()
         {
             var output = _iParametersService.GetConfigurationSettings();
-
-            //Log Parameters Loading + Errors
 
             //Send loading email if indicated.
             //TODO

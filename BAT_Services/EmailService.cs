@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BAT_Services
 {
-    public interface IEamilService
+    public interface IEmailService
     {
 
     }//IEmailService
@@ -14,7 +14,7 @@ namespace BAT_Services
     /// <summary>
     /// Contains methods associated with emailing application, trade, and algorithm information.
     /// </summary>
-    public class EmailService : IEamilService
+    public class EmailService : IEmailService
     {
 
 

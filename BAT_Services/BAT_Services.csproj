@@ -53,6 +53,10 @@
       <Project>{a386cb7a-0daa-4455-b0d2-7d0317c54052}</Project>
       <Name>BAT_Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BAT_Repository\BAT_Repository.csproj">
+      <Project>{df702872-7032-4f13-95f1-38db4d1b1e22}</Project>
+      <Name>BAT_Repository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BAT_Utilities\BAT_Utilities.csproj">
       <Project>{044139ec-ce5f-4de4-b477-55ca43190703}</Project>
       <Name>BAT_Utilities</Name>
