@@ -21,6 +21,7 @@ namespace BAT_Models
         public int CircuitBreakerHours { get; set; }
 
         public string BATsEmailAddress { get; set; }
+        public string BATsEmailPW { get; set; }
         public string SMTPServer { get; set; }
         public string InformationEmailAddress { get; set; }
         public bool BuyAndHoldComparison { get; set; }

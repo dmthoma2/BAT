@@ -103,15 +103,58 @@ namespace BAT_Tests
         [TestMethod]
         public void GetLogEntryTest()
         {
-            //Convert string into Log Entry and compare
-            //TODO
+            var logEntry = _logService.GetLogEntry(GetDefaultLogRecord());
+
+            var defaultLogEntry = GetDefaultLogEntry();
+
+            Assert.AreEqual(defaultLogEntry.TransactionGroup, logEntry.TransactionGroup);
+            Assert.AreEqual(defaultLogEntry.TransactionTime, logEntry.TransactionTime);
+            Assert.AreEqual(defaultLogEntry.Symbol, logEntry.Symbol);
+            Assert.AreEqual(defaultLogEntry.TradeType, logEntry.TradeType);
+            Assert.AreEqual(defaultLogEntry.Quantity, logEntry.Quantity);
+            Assert.AreEqual(defaultLogEntry.Price, logEntry.Price);
+            Assert.AreEqual(defaultLogEntry.Description, logEntry.Description);
+            Assert.AreEqual(defaultLogEntry.ErrorMessage, logEntry.ErrorMessage);
+            Assert.AreEqual(defaultLogEntry.HasError(), logEntry.HasError());
+
+            var logErrorEntry = _logService.GetLogEntry(GetDefaultErrorLogRecord());
+
+            var defaultLogErrorEntry = GetDefaultErrorLogEntry();
+
+            Assert.AreEqual(defaultLogErrorEntry.TransactionGroup, logErrorEntry.TransactionGroup);
+            Assert.AreEqual(defaultLogErrorEntry.TransactionTime, logErrorEntry.TransactionTime);
+            Assert.AreEqual(defaultLogErrorEntry.Symbol, logErrorEntry.Symbol);
+            Assert.AreEqual(defaultLogErrorEntry.TradeType, logErrorEntry.TradeType);
+            Assert.AreEqual(defaultLogErrorEntry.Quantity, logErrorEntry.Quantity);
+            Assert.AreEqual(defaultLogErrorEntry.Price, logErrorEntry.Price);
+            Assert.AreEqual(defaultLogErrorEntry.Description, logErrorEntry.Description);
+            Assert.AreEqual(defaultLogErrorEntry.ErrorMessage, logErrorEntry.ErrorMessage);
+            Assert.AreEqual(defaultLogErrorEntry.HasError(), logErrorEntry.HasError());
+
         }//GetLogEntryTest
 
         [TestMethod]
         public void GetLogTest()
         {
-            //Convert a collection of Log Entries into items
-            //TODO
+            var lines = new List<string>();
+            lines.Add(GetDefaultLogRecord());
+            var records = _logService.GetLog(lines);
+
+            Assert.IsNotNull(records);
+            Assert.AreEqual(1, records.Count);
+
+            records = _logService.GetLog(null);
+
+            Assert.IsNotNull(records);
+            Assert.AreEqual(0, records.Count);
+
+            lines = new List<string>();
+            lines.Add(GetDefaultLogRecord());
+            lines.Add(GetDefaultErrorLogRecord());
+            records = _logService.GetLog(lines);
+
+            Assert.IsNotNull(records);
+            Assert.AreEqual(2, records.Count);
         }//GetLogEntryTest              
     }
 }

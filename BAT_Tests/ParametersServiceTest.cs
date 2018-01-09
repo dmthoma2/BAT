@@ -32,6 +32,7 @@ namespace BAT_Tests
             _appSettings.Setup(x => x.CircuitBreakerTrades()).Returns(3);
             _appSettings.Setup(x => x.CircuitBreakerHours()).Returns(24);
             _appSettings.Setup(x => x.BATsEmailAddress()).Returns("test@noreply.com");
+            _appSettings.Setup(x => x.BATsEmailPW()).Returns("abc123");
             _appSettings.Setup(x => x.SMTPServer()).Returns("temp.smtp.com");
             _appSettings.Setup(x => x.InformationEmailAddress()).Returns("testEmail@gmail.com");
             _appSettings.Setup(x => x.SendLoadingEmail()).Returns(true);
@@ -162,6 +163,7 @@ namespace BAT_Tests
 
             SetDefaultAppSettings();
             _appSettings.Setup(x => x.BATsEmailAddress()).Returns((string)null);
+            _appSettings.Setup(x => x.BATsEmailPW()).Returns((string)null);
             _appSettings.Setup(x => x.SMTPServer()).Returns((string)null);
             _appSettings.Setup(x => x.SendLoadingEmail()).Returns(false);
             _appSettings.Setup(x => x.SendAlgorithmEmail()).Returns(false);
@@ -171,7 +173,8 @@ namespace BAT_Tests
             _appSettings.Setup(x => x.InformationEmailAddress()).Returns((string)null);
             output = _parametersService.GetNotificationSettings(new Parameters());
 
-            Assert.AreEqual("BATMOBILE@noreply.com", output.BATsEmailAddress);
+            Assert.AreEqual("BinanceAutoTrader@gmail.com", output.BATsEmailAddress);
+            Assert.AreEqual("ABC123DEF", output.BATsEmailPW);
             Assert.AreEqual("smtp.gmail.com", output.SMTPServer);
             Assert.AreEqual(string.Empty, output.InformationEmailAddress);
             Assert.AreEqual(false, output.SendLoadingEmail);

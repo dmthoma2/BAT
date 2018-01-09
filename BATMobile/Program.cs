@@ -77,11 +77,11 @@ namespace BATMobile
         {
             //Find Prices
 
-            //Log Price Finding
+            //NLog Price Finding
 
             var output = _iAlgorithmService.ExecuteREBALANCE(new REBALANCE_Params(parameters));
 
-            //Log Algorithm Results
+            //NLog Algorithm Results
 
             //Send algorithm email
             //TODO
@@ -97,7 +97,7 @@ namespace BATMobile
                 var result = _iTradeService.ExecuteTrade(trade);
             }//foreach
             
-            //Log Results
+            //Log File Results
 
             //Send results email
             //TODO

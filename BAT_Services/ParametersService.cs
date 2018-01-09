@@ -248,7 +248,11 @@ namespace BAT_Services
             parameters.BATsEmailAddress = _appSettings.BATsEmailAddress();
 
             if (string.IsNullOrWhiteSpace(parameters.BATsEmailAddress) || !parameters.BATsEmailAddress.Contains("@"))
-            { parameters.BATsEmailAddress = "BATMOBILE@noreply.com"; }//if
+            { parameters.BATsEmailAddress = "BinanceAutoTrader@gmail.com"; }//if
+
+            parameters.BATsEmailPW = _appSettings.BATsEmailPW();
+            if (string.IsNullOrWhiteSpace(parameters.BATsEmailPW))
+            { parameters.BATsEmailPW = "ABC123DEF" ; }//if
 
             parameters.SMTPServer = _appSettings.SMTPServer();
 

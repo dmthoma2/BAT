@@ -16,6 +16,7 @@ namespace BAT_Utilities
         int CircuitBreakerTrades();
         int CircuitBreakerHours();
         string BATsEmailAddress();
+        string BATsEmailPW();
         string SMTPServer();
         string InformationEmailAddress();
         bool BuyAndHoldComparison();
@@ -72,6 +73,9 @@ namespace BAT_Utilities
         public string BATsEmailAddress()
         { return System.Configuration.ConfigurationManager.AppSettings["BATsEmailAddress"]; }//BATsEmailAddress
 
+        public string BATsEmailPW()
+        { return System.Configuration.ConfigurationManager.AppSettings["BATsEmailPW"]; }//BATsEmailPW
+        
         public string SMTPServer()
         { return System.Configuration.ConfigurationManager.AppSettings["SMTPServer"]; }//SMTPServer
 
