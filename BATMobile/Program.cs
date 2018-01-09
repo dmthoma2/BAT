@@ -65,7 +65,13 @@ namespace BATMobile
             var output = _iParametersService.GetConfigurationSettings();
 
             //Send loading email if indicated.
-            //TODO
+            if (output.SendLoadingEmail)
+            {
+                var emailBody = _iEmailService.GetLoadingEmailBody(output);
+
+                _iEmailService.SendEmail(output.InformationEmailAddress, output.BATsEmailAddress,
+                            output.BATsEmailPW, output.SMTPServer, "BAT Loading - " + output.Algo, emailBody);
+            }//if
             
             return output;
         }//LoadParameters
