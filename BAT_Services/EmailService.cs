@@ -121,7 +121,7 @@ namespace BAT_Services
                     }//if
                     sb.AppendLine("<br />");
                     sb.AppendLine("<br />");
-                }
+                }//try
                 catch(Exception e)
                 {
                     string errorMessages = e.Message + "<br/>";
@@ -132,12 +132,13 @@ namespace BAT_Services
                     {
                         loopEx = loopEx.InnerException;
                         errorMessages += loopEx.Message + "<br/>";
-                    } 
+                    }//while 
 
-
+                    //"Aborting run!" is the key phrase used to by email rules and other sections of code to indicate that a fatal error occurred.
+                    //Do not remove the phrase unless refactoring in all other places.
                     sb.AppendLine("<b>Aborting run! An exception occurred while connecting to the markets and retrieving prices.  Ensure that all currency keys are valid and all trade into the base currency.</b> <br /> <i>Message</i>: " + errorMessages);
                     sb.AppendLine("<br />");
-                }
+                }//catch
                 
 
             }//if
