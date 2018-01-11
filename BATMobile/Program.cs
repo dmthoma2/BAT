@@ -37,23 +37,39 @@ namespace BATMobile
 
         static void Main(string[] args)
         {
-            StandardKernel _kernel = new StandardKernel();
-            _kernel.Load(Assembly.GetExecutingAssembly());
-            
-            Program prog = new Program(_kernel.Get<IParametersService>(), 
-                _kernel.Get<IAlgorithmService>(), 
-                _kernel.Get<ITradeService>(),
-                _kernel.Get<ILogService>(),
-                _kernel.Get<IEmailService>());
+            try
+            {
+                Console.WriteLine("Launching BAT (Binance Auto Trader)!");
 
-            //Parse configuration into a model
-            var parameters = prog.LoadParameters();
-                   
-            //Call trading algorithm
-            var trades = prog.ExecuteAlgorithm(parameters);
-       
-            //Execute trades based on results
-            prog.ExecuteTrades(trades);
+                StandardKernel _kernel = new StandardKernel();
+                _kernel.Load(Assembly.GetExecutingAssembly());
+
+                Program prog = new Program(_kernel.Get<IParametersService>(),
+                    _kernel.Get<IAlgorithmService>(),
+                    _kernel.Get<ITradeService>(),
+                    _kernel.Get<ILogService>(),
+                    _kernel.Get<IEmailService>());
+
+                Console.WriteLine("Loading Parameters! ");
+                //Parse configuration into a model
+                var parameters = prog.LoadParameters();
+
+                Console.WriteLine("Beginning Algorithm!");
+                //Call trading algorithm
+                var trades = prog.ExecuteAlgorithm(parameters);
+
+                Console.WriteLine("Beginning Trading!");
+                //Execute trades based on results
+                prog.ExecuteTrades(trades);
+            }//try
+            catch(Exception e)
+            {
+                Console.WriteLine("Exception occurred!  Message: " + e.Message);
+            }//catch
+           
+
+            Console.WriteLine("Press any key to continue...");
+            Console.ReadLine();
 
         }//Main
 
@@ -69,8 +85,21 @@ namespace BATMobile
             {
                 var emailBody = _iEmailService.GetLoadingEmailBody(output);
 
+                Console.WriteLine("Parameter Loading Results!");
+                Console.WriteLine(emailBody);
+
+                var subject = "BAT Loading - " + output.Algo;
+
+                if (emailBody.Contains("Aborting run!"))
+                { subject += " - ERROR"; }//if
+
                 _iEmailService.SendEmail(output.InformationEmailAddress, output.BATsEmailAddress,
-                            output.BATsEmailPW, output.SMTPServer, "BAT Loading - " + output.Algo, emailBody);
+                        output.BATsEmailPW, output.SMTPServer, subject, emailBody);
+
+                if (emailBody.Contains("Aborting run!"))
+                {
+                    throw new Exception("Unable to connect to markets and verify currencies.  Unable to run algorithm or trade.  Closing Application!");
+                }//if
             }//if
             
             return output;

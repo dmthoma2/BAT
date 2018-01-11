@@ -7,6 +7,7 @@ using Ninject;
 using BAT_Services;
 using BAT_Utilities;
 using BAT_Repository;
+using Binance;
 
 namespace BAT_Tests
 {
@@ -24,6 +25,8 @@ namespace BAT_Tests
             Bind<ITradeService>().To<TradeService>();
             Bind<ILogService>().To<LogService>();
             Bind<IEmailService>().To<EmailService>();
+
+            Bind<IAPIRepository>().To<APIRepository>();
         }
     }//NinjectBindings
 }

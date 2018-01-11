@@ -19,6 +19,12 @@ namespace BAT_Services
     /// </summary>
     public class EmailService : IEmailService
     {
+        private IInformationService _informationService;
+
+        public EmailService(IInformationService informationService)
+        {
+            _informationService = informationService;
+        }//EmailService
 
         public void SendEmail(string to, string from, string fromPW, string SMTPHost, string subject, string body)
         {
@@ -47,6 +53,9 @@ namespace BAT_Services
 
             if (parameters.Algo == Parameters.TradingAlgorithms.REBALANCE)
             {
+
+                //TODO Verify that base currency can be mapped from all other currencies and display prices.
+
                 sb.AppendLine("**********************************************************");
                 sb.AppendLine("<br />");
                 sb.AppendLine("REBALANCE Settings");
@@ -78,6 +87,58 @@ namespace BAT_Services
                 sb.AppendLine("**********************************************************");
                 sb.AppendLine("<br />");
                 sb.AppendLine("<br />");
+                
+                sb.AppendLine("Connectivity Verification and Current Pricing");
+                sb.AppendLine("<br />");
+
+                try
+                {
+                    var basePriceUSD = _informationService.GetPrice(parameters.BaseCurrency + "USDT");
+                    var currency1Price = _informationService.GetPrice(parameters.Currency1 + parameters.BaseCurrency);
+                    sb.AppendLine(parameters.BaseCurrency + " (Base) => " + basePriceUSD.ToString("C2"));
+                    sb.AppendLine("<br />");
+                    sb.AppendLine(parameters.Currency1 + " => " + currency1Price + " " + parameters.BaseCurrency + " => " + (currency1Price * basePriceUSD).ToString("C2"));
+                    sb.AppendLine("<br />");
+                    if (!string.IsNullOrWhiteSpace(parameters.Currency2))
+                    {
+                        var currency2Price = _informationService.GetPrice(parameters.Currency2 + parameters.BaseCurrency);
+                        sb.AppendLine(parameters.Currency2 + " => " + currency2Price + " " + parameters.BaseCurrency + " => " + (currency2Price * basePriceUSD).ToString("C2"));
+                        sb.AppendLine("<br />");
+                    }//if
+
+                    if (!string.IsNullOrWhiteSpace(parameters.Currency3))
+                    {
+                        var currency3Price = _informationService.GetPrice(parameters.Currency3 + parameters.BaseCurrency);
+                        sb.AppendLine(parameters.Currency3 + " => " + currency3Price + " " + parameters.BaseCurrency + " => " + (currency3Price * basePriceUSD).ToString("C2"));
+                        sb.AppendLine("<br />");
+                    }//if
+
+                    if (!string.IsNullOrWhiteSpace(parameters.Currency4))
+                    {
+                        var currency4Price = _informationService.GetPrice(parameters.Currency4 + parameters.BaseCurrency);
+                        sb.AppendLine(parameters.Currency4 + " => " + currency4Price + " " + parameters.BaseCurrency + " => " + (currency4Price * basePriceUSD).ToString("C2"));
+                        sb.AppendLine("<br />");
+                    }//if
+                    sb.AppendLine("<br />");
+                    sb.AppendLine("<br />");
+                }
+                catch(Exception e)
+                {
+                    string errorMessages = e.Message + "<br/>";
+
+                    Exception loopEx = e;
+
+                    while (loopEx.InnerException != null)
+                    {
+                        loopEx = loopEx.InnerException;
+                        errorMessages += loopEx.Message + "<br/>";
+                    } 
+
+
+                    sb.AppendLine("<b>Aborting run! An exception occurred while connecting to the markets and retrieving prices.  Ensure that all currency keys are valid and all trade into the base currency.</b> <br /> <i>Message</i>: " + errorMessages);
+                    sb.AppendLine("<br />");
+                }
+                
 
             }//if
 
@@ -102,7 +163,7 @@ namespace BAT_Services
 
             if(!parameters.FailOnError)
             { sb.AppendLine("The system will not halt trading due to error messages within the trading logs."); sb.AppendLine("<br />"); }//if
-
+         
             sb.AppendLine(" </ div ></ html > ");
 
             return sb.ToString();

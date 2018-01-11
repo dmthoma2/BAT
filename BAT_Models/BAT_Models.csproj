@@ -44,6 +44,7 @@
     <Compile Include="API\Trade.cs" />
     <Compile Include="API\TradeResult.cs" />
     <Compile Include="Exceptions\ConfigurationException.cs" />
+    <Compile Include="Exceptions\InformationException.cs" />
     <Compile Include="Exceptions\LogException.cs" />
     <Compile Include="Log\LogEntry.cs" />
     <Compile Include="Parameters.cs" />

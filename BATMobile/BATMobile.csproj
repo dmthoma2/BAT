@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject, Version=3.3.4.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.3.4\lib\net45\Ninject.dll</HintPath>
     </Reference>
@@ -69,6 +72,10 @@
     <ProjectReference Include="..\BAT_Utilities\BAT_Utilities.csproj">
       <Project>{044139ec-ce5f-4de4-b477-55ca43190703}</Project>
       <Name>BAT_Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Binance\Binance.csproj">
+      <Project>{65da25b7-905f-4d3f-a795-ea934717e3be}</Project>
+      <Name>Binance</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

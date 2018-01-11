@@ -86,6 +86,10 @@
       <Project>{044139ec-ce5f-4de4-b477-55ca43190703}</Project>
       <Name>BAT_Utilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Binance\Binance.csproj">
+      <Project>{65da25b7-905f-4d3f-a795-ea934717e3be}</Project>
+      <Name>Binance</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
