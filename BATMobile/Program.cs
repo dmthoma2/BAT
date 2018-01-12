@@ -61,6 +61,7 @@ namespace BATMobile
                 Console.WriteLine("Beginning Trading!");
                 //Execute trades based on results
                 prog.ExecuteTrades(trades);
+
             }//try
             catch(Exception e)
             {

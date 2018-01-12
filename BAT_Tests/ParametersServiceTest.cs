@@ -49,15 +49,19 @@ namespace BAT_Tests
             _appSettings.Setup(x => x.BaseCurrencyInitialAllocation()).Returns(0);
             _appSettings.Setup(x => x.Currency1()).Returns("XRP");
             _appSettings.Setup(x => x.Currency1Allocation()).Returns(10);
+            _appSettings.Setup(x => x.Currency1MinimumTradeUnit()).Returns(1);
             _appSettings.Setup(x => x.Currency1InitialAllocation()).Returns(33);
             _appSettings.Setup(x => x.Currency2()).Returns("IOTA");
             _appSettings.Setup(x => x.Currency2Allocation()).Returns(20);
+            _appSettings.Setup(x => x.Currency2MinimumTradeUnit()).Returns(1);
             _appSettings.Setup(x => x.Currency2InitialAllocation()).Returns(6);
             _appSettings.Setup(x => x.Currency3()).Returns("ETH");
             _appSettings.Setup(x => x.Currency3Allocation()).Returns(25);
+            _appSettings.Setup(x => x.Currency3MinimumTradeUnit()).Returns(.001m);
             _appSettings.Setup(x => x.Currency3InitialAllocation()).Returns((decimal).5);
             _appSettings.Setup(x => x.Currency4()).Returns("ADA");
             _appSettings.Setup(x => x.Currency4Allocation()).Returns(35);
+            _appSettings.Setup(x => x.Currency4MinimumTradeUnit()).Returns(0);
             _appSettings.Setup(x => x.Currency4InitialAllocation()).Returns(12);
         }
 
@@ -301,11 +305,13 @@ namespace BAT_Tests
 
             SetDefaultAppSettings();
             _appSettings.Setup(x => x.Currency1Allocation()).Returns(90);
+            _appSettings.Setup(x => x.Currency1MinimumTradeUnit()).Returns(0);
             _appSettings.Setup(x => x.Currency1InitialAllocation()).Returns(-10);
             output = _parametersService.GetCurrency1Information(new Parameters());
 
             Assert.AreEqual("XRP", output.Currency1);
             Assert.AreEqual(90, output.Currency1Allocation);
+            Assert.AreEqual(1, output.Currency1MinimumTradeUnit);
             Assert.AreEqual(0, output.Currency1InitialAllocation);
 
             SetDefaultAppSettings();
@@ -352,15 +358,18 @@ namespace BAT_Tests
 
             Assert.AreEqual("IOTA", output.Currency2);
             Assert.AreEqual(20, output.Currency2Allocation);
+            Assert.AreEqual(1, output.Currency2MinimumTradeUnit);
             Assert.AreEqual(6, output.Currency2InitialAllocation);
 
             SetDefaultAppSettings();
             _appSettings.Setup(x => x.Currency2Allocation()).Returns(90);
+            _appSettings.Setup(x => x.Currency2MinimumTradeUnit()).Returns(0);
             _appSettings.Setup(x => x.Currency2InitialAllocation()).Returns(-10);
             output = _parametersService.GetCurrency2Information(new Parameters());
 
             Assert.AreEqual("IOTA", output.Currency2);
             Assert.AreEqual(90, output.Currency2Allocation);
+            Assert.AreEqual(1, output.Currency2MinimumTradeUnit);
             Assert.AreEqual(0, output.Currency2InitialAllocation);
 
             SetDefaultAppSettings();
@@ -369,7 +378,7 @@ namespace BAT_Tests
             output = _parametersService.GetCurrency2Information(new Parameters());
 
             Assert.AreEqual(string.Empty, output.Currency2);
-            Assert.AreEqual(0, output.Currency2Allocation);
+            Assert.AreEqual(0, output.Currency2Allocation);            
             Assert.AreEqual(0, output.Currency2InitialAllocation);
 
             SetDefaultAppSettings();
@@ -407,15 +416,18 @@ namespace BAT_Tests
 
             Assert.AreEqual("ETH", output.Currency3);
             Assert.AreEqual(25, output.Currency3Allocation);
+            Assert.AreEqual(.001m, output.Currency3MinimumTradeUnit);
             Assert.AreEqual(.5m, output.Currency3InitialAllocation);
 
             SetDefaultAppSettings();
             _appSettings.Setup(x => x.Currency3Allocation()).Returns(90);
+            _appSettings.Setup(x => x.Currency3MinimumTradeUnit()).Returns(0);
             _appSettings.Setup(x => x.Currency3InitialAllocation()).Returns(-10);
             output = _parametersService.GetCurrency3Information(new Parameters());
 
             Assert.AreEqual("ETH", output.Currency3);
             Assert.AreEqual(90, output.Currency3Allocation);
+            Assert.AreEqual(1, output.Currency3MinimumTradeUnit);
             Assert.AreEqual(0, output.Currency3InitialAllocation);
 
             SetDefaultAppSettings();
@@ -462,15 +474,18 @@ namespace BAT_Tests
 
             Assert.AreEqual("ADA", output.Currency4);
             Assert.AreEqual(35, output.Currency4Allocation);
+            Assert.AreEqual(1, output.Currency4MinimumTradeUnit);
             Assert.AreEqual(12, output.Currency4InitialAllocation);
 
             SetDefaultAppSettings();
             _appSettings.Setup(x => x.Currency4Allocation()).Returns(90);
+            _appSettings.Setup(x => x.Currency4MinimumTradeUnit()).Returns(0);
             _appSettings.Setup(x => x.Currency4InitialAllocation()).Returns(-10);
             output = _parametersService.GetCurrency4Information(new Parameters());
 
             Assert.AreEqual("ADA", output.Currency4);
             Assert.AreEqual(90, output.Currency4Allocation);
+            Assert.AreEqual(1, output.Currency4MinimumTradeUnit);
             Assert.AreEqual(0, output.Currency4InitialAllocation);
 
             SetDefaultAppSettings();

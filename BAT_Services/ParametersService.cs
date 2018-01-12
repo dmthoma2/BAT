@@ -149,6 +149,10 @@ namespace BAT_Services
             if (parameters.Currency1InitialAllocation < 0)
             { parameters.Currency1InitialAllocation = 0; }//if
 
+            parameters.Currency1MinimumTradeUnit = _appSettings.Currency1MinimumTradeUnit();
+            if (parameters.Currency1MinimumTradeUnit <= 0)
+            { parameters.Currency1MinimumTradeUnit = 1; }//if
+
             return parameters;
         }//GetCurrency1Information
 
@@ -171,6 +175,10 @@ namespace BAT_Services
             parameters.Currency2InitialAllocation = _appSettings.Currency2InitialAllocation();
             if (parameters.Currency2InitialAllocation < 0)
             { parameters.Currency2InitialAllocation = 0; }//if
+
+            parameters.Currency2MinimumTradeUnit = _appSettings.Currency2MinimumTradeUnit();
+            if (parameters.Currency2MinimumTradeUnit <= 0)
+            { parameters.Currency2MinimumTradeUnit = 1; }//if
 
             return parameters;
         }//GetCurrency2Information
@@ -195,6 +203,10 @@ namespace BAT_Services
             if (parameters.Currency3InitialAllocation < 0)
             { parameters.Currency3InitialAllocation = 0; }//if
 
+            parameters.Currency3MinimumTradeUnit = _appSettings.Currency3MinimumTradeUnit();
+            if (parameters.Currency3MinimumTradeUnit <= 0)
+            { parameters.Currency3MinimumTradeUnit = 1; }//if
+
             return parameters;
         }//GetCurrency3Information
 
@@ -217,6 +229,10 @@ namespace BAT_Services
             parameters.Currency4InitialAllocation = _appSettings.Currency4InitialAllocation();
             if (parameters.Currency4InitialAllocation < 0)
             { parameters.Currency4InitialAllocation = 0; }//if
+
+            parameters.Currency4MinimumTradeUnit = _appSettings.Currency4MinimumTradeUnit();
+            if (parameters.Currency4MinimumTradeUnit <= 0)
+            { parameters.Currency4MinimumTradeUnit = 1; }//if
 
             return parameters;
         }//GetCurrency4Information

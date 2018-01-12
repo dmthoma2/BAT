@@ -40,18 +40,22 @@ namespace BAT_Models
 
         public string Currency1 { get; set; }
         public int Currency1Allocation { get; set; }
+        public decimal Currency1MinimumTradeUnit { get; set; }
         public decimal Currency1InitialAllocation { get; set; }
 
         public string Currency2 { get; set; }
         public int Currency2Allocation { get; set; }
+        public decimal Currency2MinimumTradeUnit { get; set; }
         public decimal Currency2InitialAllocation { get; set; }
 
         public string Currency3 { get; set; }
         public int Currency3Allocation { get; set; }
+        public decimal Currency3MinimumTradeUnit { get; set; }
         public decimal Currency3InitialAllocation { get; set; }
 
         public string Currency4 { get; set; }
         public int Currency4Allocation { get; set; }
+        public decimal Currency4MinimumTradeUnit { get; set; }
         public decimal Currency4InitialAllocation { get; set; }
 
         public static class TradingAlgorithms

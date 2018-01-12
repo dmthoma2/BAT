@@ -32,15 +32,19 @@ namespace BAT_Utilities
         decimal BaseCurrencyInitialAllocation();
         string Currency1();
         int Currency1Allocation();
+        decimal Currency1MinimumTradeUnit();
         decimal Currency1InitialAllocation();
         string Currency2();
         int Currency2Allocation();
+        decimal Currency2MinimumTradeUnit();
         decimal Currency2InitialAllocation();
         string Currency3();
         int Currency3Allocation();
+        decimal Currency3MinimumTradeUnit();
         decimal Currency3InitialAllocation();
         string Currency4();
         int Currency4Allocation();
+        decimal Currency4MinimumTradeUnit();
         decimal Currency4InitialAllocation();
     }//IAppSettings
 
@@ -120,6 +124,9 @@ namespace BAT_Utilities
         public int Currency1Allocation()
         { return int.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency1Allocation"]); }//Currency1Allocation
 
+        public decimal Currency1MinimumTradeUnit()
+        { return decimal.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency1MinimumTradeUnit"]); }//Currency1MinimumTradeUnit
+
         public decimal Currency1InitialAllocation()
         { return decimal.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency1InitialAllocation"]); }//Currency1InitialAllocation
 
@@ -129,6 +136,9 @@ namespace BAT_Utilities
         public int Currency2Allocation()
         { return int.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency2Allocation"]); }//Currency2Allocation
 
+        public decimal Currency2MinimumTradeUnit()
+        { return decimal.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency2MinimumTradeUnit"]); }//Currency2MinimumTradeUnit
+        
         public decimal Currency2InitialAllocation()
         { return decimal.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency2InitialAllocation"]); }//Currency2InitialAllocation
 
@@ -138,6 +148,9 @@ namespace BAT_Utilities
         public int Currency3Allocation()
         { return int.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency3Allocation"]); }//Currency3Allocation
 
+        public decimal Currency3MinimumTradeUnit()
+        { return decimal.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency3MinimumTradeUnit"]); }//Currency3MinimumTradeUnit
+
         public decimal Currency3InitialAllocation()
         { return decimal.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency3InitialAllocation"]); }//Currency3InitialAllocation
 
@@ -146,6 +159,9 @@ namespace BAT_Utilities
 
         public int Currency4Allocation()
         { return int.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency4Allocation"]); }//Currency4Allocation
+
+        public decimal Currency4MinimumTradeUnit()
+        { return decimal.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency4MinimumTradeUnit"]); }//Currency4MinimumTradeUnit
 
         public decimal Currency4InitialAllocation()
         { return decimal.Parse(System.Configuration.ConfigurationManager.AppSettings["Currency4InitialAllocation"]); }//Currency4InitialAllocation
