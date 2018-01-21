@@ -20,14 +20,16 @@ namespace BATMobile
     {
         private Guid RunID;
         private IParametersService _iParametersService;
+        private IInformationService _iInformationService;
         private IAlgorithmService _iAlgorithmService;
         private ITradeService _iTradeService;
         private ILogService _iLogService;
         private IEmailService _iEmailService;
 
-        public Program(IParametersService iParametersService, IAlgorithmService iAlgorithmService, ITradeService iTradeService, ILogService iLogService, IEmailService iEmailService)
+        public Program(IParametersService iParametersService, IInformationService iInformationService, IAlgorithmService iAlgorithmService, ITradeService iTradeService, ILogService iLogService, IEmailService iEmailService)
         {
             _iParametersService = iParametersService;
+            _iInformationService = iInformationService;
             _iAlgorithmService = iAlgorithmService;
             _iTradeService = iTradeService;
             _iLogService = iLogService;
@@ -45,6 +47,7 @@ namespace BATMobile
                 _kernel.Load(Assembly.GetExecutingAssembly());
 
                 Program prog = new Program(_kernel.Get<IParametersService>(),
+                    _kernel.Get<IInformationService>(),
                     _kernel.Get<IAlgorithmService>(),
                     _kernel.Get<ITradeService>(),
                     _kernel.Get<ILogService>(),
@@ -112,12 +115,16 @@ namespace BATMobile
         public List<Trade> ExecuteAlgorithm(Parameters parameters)
         {
             //Find Prices
+            var balances = _iInformationService.GetAccountHoldings(parameters.APIKey, parameters.APITradingKey);
+            var balanceParameters = _iAlgorithmService.GetAlgoParams(parameters, balances);
 
             //NLog Price Finding
+            //TODO
 
-            var output = _iAlgorithmService.ExecuteREBALANCE(new REBALANCE_Params(parameters));
+            var output = _iAlgorithmService.ExecuteREBALANCE(balanceParameters);
 
             //NLog Algorithm Results
+            //TODO
 
             //Send algorithm email
             //TODO

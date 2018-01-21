@@ -65,6 +65,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParametersServiceTest.cs" />
     <Compile Include="LogServiceTest.cs" />
+    <Compile Include="InformationServiceTest.cs" />
+    <Compile Include="AlgorithmServiceTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

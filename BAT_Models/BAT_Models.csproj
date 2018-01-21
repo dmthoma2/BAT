@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithm\Asset.cs" />
     <Compile Include="Algorithm\REBALANCE_Params.cs" />
     <Compile Include="API\Trade.cs" />
     <Compile Include="API\TradeResult.cs" />
@@ -49,6 +50,12 @@
     <Compile Include="Log\LogEntry.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Binance\Binance.csproj">
+      <Project>{65da25b7-905f-4d3f-a795-ea934717e3be}</Project>
+      <Name>Binance</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

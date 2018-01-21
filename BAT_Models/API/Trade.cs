@@ -8,6 +8,10 @@ namespace BAT_Models.API
 {
     public class Trade
     {
+        public string Symbol { get; set; }
+        public string TradeType { get; set; }
+        public decimal Amount { get; set; }
+
 
         public static class TradeTypes
         {
