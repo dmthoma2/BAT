@@ -61,9 +61,12 @@ namespace BATMobile
                 //Call trading algorithm
                 var trades = prog.ExecuteAlgorithm(parameters);
 
-                Console.WriteLine("Beginning Trading!");
-                //Execute trades based on results
-                prog.ExecuteTrades(trades, parameters);
+                if(trades != null && trades.Any())
+                {
+                    Console.WriteLine("Beginning Trading!");
+                    //Execute trades based on results
+                    prog.ExecuteTrades(trades, parameters);
+                }//if              
 
             }//try
             catch(Exception e)
@@ -72,8 +75,8 @@ namespace BATMobile
             }//catch
            
 
-            Console.WriteLine("Press any key to continue...");
-            Console.ReadLine();
+            //Console.WriteLine("Press any key to continue...");
+            //Console.ReadLine();
 
         }//Main
 
@@ -96,6 +99,8 @@ namespace BATMobile
 
                 if (emailBody.Contains("Aborting run!"))
                 { subject += " - ERROR"; }//if
+
+                subject += " - ID " + RunID.ToString();
 
                 _iEmailService.SendEmail(output.InformationEmailAddress, output.BATsEmailAddress,
                         output.BATsEmailPW, output.SMTPServer, subject, emailBody);
@@ -139,7 +144,9 @@ namespace BATMobile
                 string subject = "REBALANCE Algo Results";
                 if(trades != null && trades.Any())
                 { subject += " - TRADES FOUND"; }//if
-                
+
+                subject += " - ID " + RunID.ToString();
+
                 _iEmailService.SendEmail(parameters.InformationEmailAddress, parameters.BATsEmailAddress,
                         parameters.BATsEmailPW, parameters.SMTPServer, subject, emailBody);
 
@@ -159,11 +166,13 @@ namespace BATMobile
                 }//foreach
 
                 //Log File Results
+                //TODO
 
                 //Send results email
                 _iEmailService.SendEmail(parameters.InformationEmailAddress, parameters.BATsEmailAddress,
-                       parameters.BATsEmailPW, parameters.SMTPServer, "REBALANCE Trade Results", "All trades executed successfully!");
+                        parameters.BATsEmailPW, parameters.SMTPServer, "REBALANCE Trade Results - ID " + RunID.ToString(), "All trades executed successfully!");
                 Console.WriteLine("All trades executed successfully!");
+               
             }//try
             catch (Exception e)
             {
@@ -185,7 +194,7 @@ namespace BATMobile
                 sb.AppendLine("<br />");
 
                 _iEmailService.SendEmail(parameters.InformationEmailAddress, parameters.BATsEmailAddress,
-                       parameters.BATsEmailPW, parameters.SMTPServer, "REBALANCE Trade Results - ERROR", sb.ToString());
+                       parameters.BATsEmailPW, parameters.SMTPServer, "REBALANCE Trade Results - ERROR - ID " + RunID.ToString(), sb.ToString());
 
                 Console.WriteLine(sb.ToString());
             }//catch                           
