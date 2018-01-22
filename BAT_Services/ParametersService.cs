@@ -312,7 +312,9 @@ namespace BAT_Services
             {
                 throw new ConfigurationException("Unrecognized trading algorithm.");
             }//if
-            
+
+            parameters.TestTrades = _appSettings.TestTrades();
+
             return parameters;
         }//GetAlgorithmType
 

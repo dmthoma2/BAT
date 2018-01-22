@@ -31,6 +31,7 @@ namespace BAT_Models
         public bool FailOnError { get; set; }
         public string HistoryFile { get; set; }
         public string Algo { get; set; }
+        public bool TestTrades { get; set; }
 
         public int RebalanceThreshold { get; set; }
 

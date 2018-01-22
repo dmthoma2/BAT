@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Mail;
 using BAT_Models;
+using BAT_Models.API;
+using Binance.Account;
 
 namespace BAT_Services
 {
@@ -12,6 +14,7 @@ namespace BAT_Services
     {
         void SendEmail(string to, string from, string fromPW, string SMTPHost, string subject, string body);
         string GetLoadingEmailBody(Parameters parameters);
+        string GetREBALANCEEmailBody(string baseCurrency, List<AccountBalance> balances, List<Trade> trades);
     }//IEmailService
 
     /// <summary>
@@ -169,6 +172,76 @@ namespace BAT_Services
 
             return sb.ToString();
         }//GetLoadingEmailBody
+
+        public string GetREBALANCEEmailBody(string baseCurrency, List<AccountBalance> balances, List<Trade> trades)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("<html><div style=\"font-size:10.5px; font-family:Tahoma;\">");
+            sb.AppendLine("BAT Loading - " + DateTime.Now + " - Algorithm Type: <b>REBALANCE</b>");
+            sb.AppendLine("<br />");
+            sb.AppendLine("<br />");
+            try
+            {
+                var basePriceUSDT = _informationService.GetPrice(baseCurrency + "USDT");
+                var accountBaseTotal = 0m;
+                sb.AppendLine("Current account balances:");
+                sb.AppendLine("<br />");
+                foreach (var balance in balances.Where(x => x.Free > 0 && x.Asset != "USDT"))
+                {
+                    if (balance.Asset == baseCurrency)
+                    {
+                        accountBaseTotal += balance.Free;
+                        sb.AppendLine(balance.Free.ToString("N8") + " " + baseCurrency + " => " + (balance.Free * basePriceUSDT).ToString("C2"));
+                    }//if
+                    else
+                    {
+                        var priceInBase = _informationService.GetPrice(balance.Asset + baseCurrency);
+                        var valueOfOwned = priceInBase * balance.Free;
+                        accountBaseTotal += valueOfOwned;
+                        sb.AppendLine(balance.Free.ToString("N4") + " " + balance.Asset + " => " + valueOfOwned.ToString("N8") + " " + baseCurrency + " => " + (valueOfOwned * basePriceUSDT).ToString("C2"));
+                    }//else
+                    sb.AppendLine("<br />");
+
+                }//foreach
+                sb.AppendLine("<b>Total</b>: " + accountBaseTotal.ToString("N8") + " " + baseCurrency + " => " + (accountBaseTotal * basePriceUSDT).ToString("C2"));
+                sb.AppendLine("<br />");
+                sb.AppendLine("<br />");
+                sb.AppendLine("<br />");
+                sb.AppendLine("REBALANCE has determined the following trades are to be executed:");
+                sb.AppendLine("<br />");
+                if (trades == null || trades.Count() == 0)
+                {
+                    sb.AppendLine("No trades needed!");
+                    sb.AppendLine("<br />");
+                }//if
+                else
+                {
+                    foreach (var trade in trades)
+                    {
+                        sb.AppendLine(trade.Symbol + " => " + trade.TradeType + " => " + trade.Amount);
+                        sb.AppendLine("<br />");
+                    }//foreach
+                }//else
+            }
+            catch (Exception e)
+            {
+                string errorMessages = e.Message + "<br/>";
+
+                Exception loopEx = e;
+
+                while (loopEx.InnerException != null)
+                {
+                    loopEx = loopEx.InnerException;
+                    errorMessages += loopEx.Message + "<br/>";
+                }//while 
+                sb.AppendLine(errorMessages);
+            }//catch
+            
+            
+            sb.AppendLine(" </ div ></ html > ");
+
+            return sb.ToString();
+        }//GetREBALANCEEmailBody
 
     }//Email Service
 }

@@ -42,6 +42,7 @@ namespace BAT_Tests
             _appSettings.Setup(x => x.FailOnError()).Returns(true);
             _appSettings.Setup(x => x.HistoryFile()).Returns("whatever.txt");
             _appSettings.Setup(x => x.Algo()).Returns("REBALANCE");
+            _appSettings.Setup(x => x.TestTrades()).Returns(true);
 
             _appSettings.Setup(x => x.RebalanceThreshold()).Returns(5);
             _appSettings.Setup(x => x.BaseCurrency()).Returns("BTC");
@@ -213,6 +214,14 @@ namespace BAT_Tests
             var output = _parametersService.GetAlgorithmType(new Parameters());
 
             Assert.AreEqual("REBALANCE", output.Algo);
+            Assert.IsTrue(output.TestTrades);
+
+            SetDefaultAppSettings();
+            _appSettings.Setup(x => x.TestTrades()).Returns(false);
+
+            output = _parametersService.GetAlgorithmType(new Parameters());
+
+            Assert.IsFalse(output.TestTrades);
 
             SetDefaultAppSettings();
             _appSettings.Setup(x => x.Algo()).Returns((string)null);

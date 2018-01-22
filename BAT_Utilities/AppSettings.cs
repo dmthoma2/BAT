@@ -26,6 +26,7 @@ namespace BAT_Utilities
         bool FailOnError();
         string HistoryFile();
         string Algo();
+        bool TestTrades();
 
         string BaseCurrency();
         int BaseCurrencyAllocation();
@@ -106,6 +107,9 @@ namespace BAT_Utilities
 
         public string Algo()
         { return System.Configuration.ConfigurationManager.AppSettings["Algo"]; }//Algo
+
+        public bool TestTrades()
+        { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["TestTrades"]); }//TestTrades
 
 
 

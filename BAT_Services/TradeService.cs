@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using BAT_Repository;
 
 namespace BAT_Services
 {
     public interface ITradeService
     {
-        TradeResult ExecuteTrade(Trade trade);
+        void ExecuteTrade(Trade trade, string BaseCurrency, string APIKey, string SecretKey, bool TestTrade);
     }//ITradeService
 
     /// <summary>
@@ -15,16 +16,22 @@ namespace BAT_Services
     /// </summary>
     public class TradeService : ITradeService
     {
+        private static IAPIRepository _apiRepository;
+
+        public TradeService(IAPIRepository apiRepository)
+        {
+            _apiRepository = apiRepository;
+        }//Constructor
+
         /// <summary>
         /// Executes a trade through the Binance API.
         /// </summary>
         /// <param name="trade">The trade to execute.</param>
         /// <returns>A summary of the executed trade.</returns>
-        public TradeResult ExecuteTrade(Trade trade)
+        public void ExecuteTrade(Trade trade, string BaseCurrency, string APIKey, string SecretKey, bool TestTrade)
         {
-            //TODO
-
-            return new TradeResult();
+            _apiRepository.ExecuteTrade(trade.Symbol + BaseCurrency, trade.TradeType, trade.Amount, APIKey, SecretKey, TestTrade);
+            
         }//ExecuteTrade
 
     }//TradeService

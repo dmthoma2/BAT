@@ -63,7 +63,7 @@ namespace BATMobile
 
                 Console.WriteLine("Beginning Trading!");
                 //Execute trades based on results
-                prog.ExecuteTrades(trades);
+                prog.ExecuteTrades(trades, parameters);
 
             }//try
             catch(Exception e)
@@ -120,31 +120,76 @@ namespace BATMobile
 
             //NLog Price Finding
             //TODO
+            
 
-            var output = _iAlgorithmService.ExecuteREBALANCE(balanceParameters);
+            var trades = _iAlgorithmService.ExecuteREBALANCE(balanceParameters);
 
             //NLog Algorithm Results
             //TODO
 
             //Send algorithm email
-            //TODO
-               
+            if (parameters.SendAlgorithmEmail)
+            {
+                
+                var baseCurrencyPriceUSDT = _iInformationService.GetPrice(parameters.BaseCurrency + "USDT");
+                var emailBody = _iEmailService.GetREBALANCEEmailBody(parameters.BaseCurrency, balances, trades);
 
-            return output;
+                Console.WriteLine("REBALANCE Algorithm Complete");
+                Console.WriteLine(emailBody);
+                string subject = "REBALANCE Algo Results";
+                if(trades != null && trades.Any())
+                { subject += " - TRADES FOUND"; }//if
+                
+                _iEmailService.SendEmail(parameters.InformationEmailAddress, parameters.BATsEmailAddress,
+                        parameters.BATsEmailPW, parameters.SMTPServer, subject, emailBody);
+
+            }//if
+
+
+            return trades;
         }//ExecuteAlgorithm
 
-        public void ExecuteTrades(List<Trade> trades)
+        public void ExecuteTrades(List<Trade> trades, Parameters parameters)
         {
-            foreach (var trade in trades)
+            try
             {
-                var result = _iTradeService.ExecuteTrade(trade);
-            }//foreach
+                foreach (var trade in trades)
+                {
+                    _iTradeService.ExecuteTrade(trade, parameters.BaseCurrency, parameters.APIKey, parameters.APITradingKey, parameters.TestTrades);
+                }//foreach
+
+                //Log File Results
+
+                //Send results email
+                _iEmailService.SendEmail(parameters.InformationEmailAddress, parameters.BATsEmailAddress,
+                       parameters.BATsEmailPW, parameters.SMTPServer, "REBALANCE Trade Results", "All trades executed successfully!");
+                Console.WriteLine("All trades executed successfully!");
+            }//try
+            catch (Exception e)
+            {
+                StringBuilder sb = new StringBuilder();
+                //Log File Results
+                string errorMessages = e.Message + "<br/>";
+
+                Exception loopEx = e;
+
+                while (loopEx.InnerException != null)
+                {
+                    loopEx = loopEx.InnerException;
+                    errorMessages += loopEx.Message + "<br/>";
+                }//while 
+
+                //"Aborting run!" is the key phrase used to by email rules and other sections of code to indicate that a fatal error occurred.
+                //Do not remove the phrase unless refactoring in all other places.
+                sb.AppendLine("<b> An error occurred during trading!</b> <br /> <i>Message</i>: " + errorMessages);
+                sb.AppendLine("<br />");
+
+                _iEmailService.SendEmail(parameters.InformationEmailAddress, parameters.BATsEmailAddress,
+                       parameters.BATsEmailPW, parameters.SMTPServer, "REBALANCE Trade Results - ERROR", sb.ToString());
+
+                Console.WriteLine(sb.ToString());
+            }//catch                           
             
-            //Log File Results
-
-            //Send results email
-            //TODO
-
         }//ExecuteTrades
 
     }//Program

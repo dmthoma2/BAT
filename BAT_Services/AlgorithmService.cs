@@ -90,11 +90,13 @@ namespace BAT_Services
             decimal AccountValue = parameters.BaseCurrencyBalance + parameters.Currencies.Sum(x => x.Quanity * x.PriceInBaseCurrency);
 
             List<Trade> output = new List<Trade>();
-            
+
+            decimal adjustedBase = parameters.BaseCurrencyBalance;
+
             foreach (var crypto in parameters.Currencies)
             {
                 //Calculate rebalance thresholds for this currency
-                decimal targetBalance = parameters.BaseCurrencyBalance * ((decimal)crypto.TargetAllocation / parameters.BaseCurrencyTargetAllocation);
+                decimal targetBalance = adjustedBase * ((decimal)crypto.TargetAllocation / parameters.BaseCurrencyTargetAllocation);
                 decimal rebalanceDelta = targetBalance * (parameters.RebalanceThreshold / 100m);
                 decimal lowerBound = targetBalance - rebalanceDelta;
                 decimal upperBound = targetBalance + rebalanceDelta;
@@ -104,33 +106,38 @@ namespace BAT_Services
                 if(value < lowerBound)
                 {
                     //Calculate units to buy as the number of trading units needs to be bought to bring to bring this crypto into balance.  Only need to execute 1/2 the number of trades because funds raised from the trades will adjust the target.
-                    var unitsToBuy = Math.Floor((Math.Abs((parameters.BaseCurrencyBalance - value)) / crypto.PriceInBaseCurrency) / crypto.MinimumTradingUnit / 2);
+                    var unitsToBuy =Math.Abs((targetBalance - value) / crypto.PriceInBaseCurrency) / crypto.MinimumTradingUnit / 2;
+                    var tradeExecutionNumber = Math.Floor(unitsToBuy) * crypto.MinimumTradingUnit;
+                    var projectedCost = tradeExecutionNumber * crypto.MinimumTradingUnit * crypto.PriceInBaseCurrency;
+                    adjustedBase -= projectedCost;
+
                     output.Add(new Trade()
                     {
                         Symbol = crypto.Symbol,
                         TradeType = Trade.TradeTypes.BUY,
-                        Amount = unitsToBuy
+                        Amount = tradeExecutionNumber
 
                     });
                 }//if
                 else if (value > upperBound)
                 {
                     //Calculate units to sell as the number of trading units needs to be bought to bring to bring this crypto into balance.  Only need to execute 1/2 the number of trades because funds raised from the trades will adjust the target.
-                    var unitsToSell = Math.Floor((Math.Abs((parameters.BaseCurrencyBalance - value)) / crypto.PriceInBaseCurrency) / crypto.MinimumTradingUnit / 2) ;
+                    var unitsToSell = (Math.Abs((targetBalance - value)) / crypto.PriceInBaseCurrency) / crypto.MinimumTradingUnit / 2;
+                    var tradeExecutionNumber = Math.Floor(unitsToSell) * crypto.MinimumTradingUnit;
+                    var projectedCost = tradeExecutionNumber * crypto.MinimumTradingUnit * crypto.PriceInBaseCurrency;
+                    adjustedBase += projectedCost;
+
                     output.Add(new Trade()
                     {
                         Symbol = crypto.Symbol,
                         TradeType = Trade.TradeTypes.SELL,
-                        Amount = unitsToSell
+                        Amount = tradeExecutionNumber
                     });
                 }//if
-
-
+                
             }//foreach
 
-
-
-            return new List<Trade>();
+            return output;
         }//ExecuteREBALANCE
 
     }//AlgorithmService
